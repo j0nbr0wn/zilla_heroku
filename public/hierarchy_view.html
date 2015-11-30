@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Account Detail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/zilla.ico">
+    <!-- Bootstrap -->
+    <link href="css/structure.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <!-- Bootstrap links -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+
+<!-- navbar which will only show on small devices -->
+<nav class="navbar navbar-default navbar-static-top visible-xs-block">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li class="active"><a href="select_products.html">Products</a></li>
+        <li><a href="admin.html">Admin Tests</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<!-- end of navbar -->
+
+<!-- start Header -->
+<div id="header" class="text-center hidden-xs">
+    <a class="brand" href="backend/logout.php"> <img src="./images/header.png" alt="header"></a>
+</div>
+<!-- end header-holder -->
+
+<br></br>
+<br></br>
+
+<!-- navbar which will NOT show on small devices -->
+<div class="hidden-xs">
+  <div id="side_nav">
+    <a role="button" class="btn btn-default" data-toggle="collapse" href="#nav_links" aria-expanded="false" aria-controls="nav_links" role="tabpanel">
+      <span class="fa fa-bars"></span>
+    </a>
+    <div id="nav_links" class="panel-collapse collapse list-group">
+      <ul class="list-group">
+        <a class="list-group-item" href="index.html">Home</a>
+        <a class="list-group-item" href="login.html">Login</a>
+        <a class="list-group-item" href="select_products.html">Products</a>
+        <a class="list-group-item" href="admin.html">Admin Tests</a>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- end of side navbar -->
+
+<!-- end header -->
+
+<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Hierarchy Summary:</h3>
+        </div>
+        <div class="panel-body">
+          <div class="loading alert alert-warning" role="alert">
+            <span class="fa fa-spinner fa-spin"></span> loading...
+          </div>
+          <div class="child_account_list tree">
+          </div>
+        </div> <!-- End Panel Body -->
+    </div> <!-- End Panel -->
+</div>
+
+<!-- Footer Image begin -->
+<div id="footer" class="text-center hidden-xs">
+    <img src="./images/footer.png" alt="footer">
+</div>
+<!-- Footer Image End -->
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/function.js" /></script>
+<script type="application/javascript" >
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    $(document).ready(function(){
+
+        $.getJSON("backend/index.php?type=IsUserLoggedIn",
+            function(data){
+                if(!data.success) {
+                    if(data.msg[0].msg=='SESSION_NOT_SET'){
+                        window.location.replace('login.html');
+                    }
+                }
+            }
+        );
+        validateLoggedInEmail();
+    });
+
+        //Send a request to validate that the email address exists. Upon a successful result, send requests to load all account summaries.
+        function validateLoggedInEmail(){
+            buildHeirarchy();
+        }
+
+        function buildHeirarchy(){
+            getChildAccounts();
+        }
+
+        function getChildAccounts(){
+            $.getJSON("backend/index.php?type=GetHierarchy",
+                function(data){
+                    console.log(data);
+                    if(data.msg[0].msg=='USER_DOESNT_EXIST'){
+                        window.location.replace('login.html');
+                        return;
+                    }
+                    if(data.msg[0].msg=='INVALID_ZLOGIN'){
+                        alert('There is an error with the server. Please try again later.');
+                        window.location.replace('login.html');
+                        return;
+                    }
+                    var hierarchy = data.msg[0];
+                    var html = "";
+                    if(hierarchy.sub_Hierarchies != null){
+                        var indent = 5;
+                        html+="<ul>";
+                        html+="  <li>";
+                        html+="     <div class='btn-group' role='group'>";
+                        html+="      <button class='btn btn-default btn-sm collapser'>&nbsp;<i class='fa fa-circle-o'></i>&nbsp;</button>";
+                        html+="      <button class='btn btn-default btn-sm account-name prospect-color' id='account-name___"+hierarchy.acctName+"' data-account-id='"+hierarchy.accountId+"'>"+hierarchy.acctName+"</button>";
+                        html+="     </div>";
+                        html += generateChildHtml(hierarchy, indent)+"</ul>";
+                        html+="  </li>";
+                        $('.child_account_list').html(html);
+                    }
+                    $('.loading').hide();
+                    $(".account-name").on('click', function(){
+                        var $this = $(this);
+                        console.log($this);
+                        var IdsArray = $this.attr('id').split('___');
+                        var acctName = IdsArray[1];
+                        var accId = $this.data("account-id");
+                        // console.log(accId);
+                        gotoAccountView(acctName, accId, 'null')
+                    });
+                    // Hierarchy function
+                    $('.tree li:has(ul)').addClass('parent_li').find(' > div');
+                    var $collapserBtn = $('.tree li.parent_li > div > button.collapser')
+                    $collapserBtn.children('i').removeClass('fa-circle-o').addClass('fa-minus');
+                    $collapserBtn.on('click', function (e) {
+                        // console.log('collapser clicked');
+                        var children = $(this).closest('li.parent_li').find(' > ul > li');
+                        // console.log(children);
+                        if (children.is(":visible")) {
+                            children.hide('fast');
+                            $(this).find(' > i').addClass('fa-plus').removeClass('fa-minus');
+                        } else {
+                            children.show('fast');
+                            $(this).find(' > i').addClass('fa-minus').removeClass('fa-plus');
+                        }
+                        e.stopPropagation();
+                    });
+                }
+            );
+        }
+
+        function generateChildHtml(hierarchy, indent){
+            var html = "";
+                    if(hierarchy.sub_Hierarchies != null){
+                        for(var i = 0; i < hierarchy.sub_Hierarchies.length; i++){
+                            html+="<ul>";
+                            html+="  <li>";
+                            html+="    <div class='btn-group' role='group'>";
+                            html+="      <button class='btn btn-default btn-sm collapser'>&nbsp;<i class='fa fa-circle-o'></i>&nbsp;</button>";
+                            html+="      <button class='btn btn-default btn-sm account-name prospect-color' id='account-name___"+hierarchy.sub_Hierarchies[i].acctName+"' data-account-id='"+hierarchy.sub_Hierarchies[i].accountId+"'>"+hierarchy.sub_Hierarchies[i].acctName+"</button>";
+                            html+="     </div>";
+                            var newIndent = indent + 5;
+                            html+=generateChildHtml(hierarchy.sub_Hierarchies[i], newIndent);
+                            html+="  </li>";
+                            html+="</ul>";
+
+                        }
+                    }
+            return html;
+        }
+
+        function gotoAccountView(email, accId, parentId){
+            $.getJSON("backend/index.php?type=GoToAccountView", {email:email, accId:accId, parentId:parentId},
+                function(data){
+                    window.location.replace('account_view.html');
+                }
+            );
+
+        }
+</script>
+</body>
+</html>

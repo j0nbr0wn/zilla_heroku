@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Console</title>
+    <link rel="icon" href="images/zilla.ico">
+    <link href="css/structure.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+
+<!-- navbar which will only show on small devices -->
+<nav class="navbar navbar-default navbar-static-top visible-xs-block">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="select_products.html">Products</a></li>
+        <li class="active"><a href="admin.html">Admin Tests</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<!-- end of navbar -->
+
+<!-- navbar which will NOT show on small devices -->
+<div class="hidden-xs">
+  <div id="side_nav">
+    <a role="button" class="btn btn-default" data-toggle="collapse" href="#nav_links" aria-expanded="false" aria-controls="nav_links" role="tabpanel">
+      <span class="fa fa-bars"></span>
+    </a>
+    <div id="nav_links" class="panel-collapse collapse list-group">
+      <ul class="list-group">
+        <a class="list-group-item" href="index.html">Home</a>
+        <a class="list-group-item" href="login.html">Login</a>
+        <a class="list-group-item" href="select_products.html">Products</a>
+        <a class="list-group-item" href="admin.html">Admin Tests</a>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- end of side navbar -->
+
+<div class="col-xs-12 col-sm-10 col-md-10 col-sm-offset-1 col-md-offset-1">
+  <div id="top">
+    <a href="index.html"><img src="images/logo.png" alt="Zuora"></a>
+  </div>
+  <div class="text-center">
+    <h3>Project Zilla The Rebranded Edition 4.x</h3>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Pages</h3>
+        </div>
+        <div class="panel-body">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <a role="button" class="btn btn-sm prospect-color" href='select_products.html'>Select Products</a>
+            <a role="button" class="btn btn-sm prospect-color" href='login.html'>Login</a>
+          </li>
+          <li class="list-group-item">
+            <button id="refresh_button" class="btn btn-sm prospect-color">Refresh Catalog</button>
+            <span>Note: this could take a LONG time (e.g. 120 seconds)</span>
+            <span id="infor" class="hidden"></span>
+          </li>
+          <li class="list-group-item product-results hidden">
+            <div class="loading alert alert-warning" role="alert"> <span class="fa fa-spinner fa-spin"></span> loading... </div>
+            <!-- Products refreshed from catalog will go here -->
+          </li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Debug</h3>
+        </div>
+        <div class="panel-body">
+          <form action='backend/test.php' method='get'>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="checkbox">
+                  <label>
+                    <input type='checkbox' name='zApi'> zApi
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type='checkbox' name='Catalog'>Catalog
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type='checkbox' name='Cart'>Cart
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type='checkbox' name='SubscriptionManager'>SubscriptionManager
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type='checkbox' name='AccountManager'>AccountManager
+                  </label>
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="checkbox">
+                  <label>
+                    <input type='checkbox' name='PaymentManager'>PaymentManager
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type='checkbox' name='InvoiceManager'>InvoiceManager
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type='checkbox' name='Amender'>Amender
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type='checkbox' name='sApi'>sApi
+                  </label>
+                </div>
+              </div>
+            </div>
+            <br>
+            Name of an existing Zuora Account: <input type='text' name='existingAccount' value=''/>
+            <br/>
+            <button type='submit' class="btn btn-sm prospect-color">Test</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <span>
+      Copyright &copy; 2014, Zuora Inc. All Rights Reserved. Various trademarks held by their respective owners.
+    </span>
+  </div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/function.js" /></script>
+<script type="text/javascript" src="https://static.zuora.com/Resources/libs/hosted/1.1.0/zuora-min.js"/></script>
+<script type="application/javascript" >
+    $(document).ready(function(){
+        $("#refresh_button").on('click', function(){
+          refreshCatalog();
+        });
+      });
+
+      var refreshCatalog = function(){
+        $(".product-results").removeClass('hidden');
+
+        $.getJSON("backend/index.php?type=RefreshCatalog",
+          function(data){
+            if(!data.success) { addError(data.msg); }
+            else {
+              $(".loading").fadeOut('fast');
+              showResults(data.msg);
+            }
+              }
+        );
+      }
+
+      var showResults = function(msg){
+        html = "";
+        html += "<br>";
+        html += "=========<br>";
+        html += "=SUCCESS=<br>";
+        html += "=========<br>";
+        for(var i in msg){
+          var g = msg[i];
+          html+=g.Name+"<br>";
+          for(var j in g.products){
+            var p = g.products[j];
+            html+= "-> "+p.Name+"<br>";
+            for(var k in p.ratePlans){
+              var rp = p.ratePlans[k];
+              html+= "---> "+ rp.Name+"<br>";
+              for(var l in rp.charges){
+                var c = rp.charges[l];
+                html+= "-----> " + c.Name+"<br>";
+              }
+            }
+          }
+        }
+        html += "<br>=======<br>";
+        $(".product-results").html(html);
+      }
+
+      var addError = function(emsg){
+        $("#infor").append(emsg).removeClass('hidden');
+      };
+</script>
+
+</body>
+</html>

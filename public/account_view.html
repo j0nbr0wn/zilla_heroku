@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Account Detail</title>
+	<link rel="icon" href="images/zilla.ico">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link href="css/structure.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- Begin Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="previewModalLabel">Confirm Your Selection</h4>
+      </div>
+      <div class="modal-body">
+        <span id='previewMessageCost' class='hidden'>Your account will be <span id="charge-or-credit">charged an additional</span> <span class='currencySym'></span><span id='previewValue'></span> effective immediately. Are you sure?</span>
+        <span id='previewMessageRenew' class='hidden'>Your subscription term will be extended by
+        	<span id='renewMonths'></span> months. Are you sure?
+        </span>
+        <input type="hidden" id="previewSubId" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn prospect-color" id="modal-confirm-btn">Confirm Change</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Preview Modal -->
+
+<!-- Begin Cancel Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="cancelModalLabel">Select Cancellation Options</h4>
+      </div>
+      <div class="modal-body">
+  		<form class="form-inline">
+	  		<div class="form-group">
+			    <label class="sr-only" for="cancel-dropdown">Cancel Dropdown Setting</label>
+			    <select class='form-control' id='cancel-dropdown' name='cancel-dropdown'>
+  				</select>
+		  	</div>
+		  	<div class="form-group">
+  				<label class="sr-only" for="cancel-date">Cancel Date</label>
+  				<input class="form-control" type='text' id='cancel-date' name='cancel-date' placeholder='MM/DD/YYYY'/>
+  			</div>
+  			<input type="hidden" id="cancelSubId" name="cancelSubId" />
+  		</form>
+  		<div class='row'>
+  			<div id='date-error' class='alert alert-danger hidden' role='alert'><span class='fa fa-exclamation-circle'></span><span id='date-error-message'></span></div>
+  			<div><span id='date-error' style='color: red;'></span></div>
+  		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id='exit-cancel' class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" id='finalize-cancel' class="btn prospect-color">Finalize Cancellation</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Cancel Modal -->
+
+<!-- navbar which will only show on small devices -->
+<nav class="navbar navbar-default navbar-static-top visible-xs-block">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="select_products.html">Products</a></li>
+        <li><a href="admin.html">Admin Tests</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<!-- end of navbar -->
+
+<!-- navbar which will NOT show on small devices -->
+<div class="hidden-xs">
+  <div id="side_nav">
+    <a role="button" class="btn btn-default" data-toggle="collapse" href="#nav_links" aria-expanded="false" aria-controls="nav_links" role="tabpanel">
+      <span class="fa fa-bars"></span>
+    </a>
+    <div id="nav_links" class="panel-collapse collapse list-group">
+      <ul class="list-group">
+        <a class="list-group-item" href="index.html">Home</a>
+        <a class="list-group-item" href="login.html">Login</a>
+        <a class="list-group-item" href="select_products.html">Products</a>
+        <a class="list-group-item" href="admin.html">Admin Tests</a>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- end of side navbar -->
+
+<!-- Start Header -->
+<div id="header" class="text-center hidden-xs">
+	<a href="backend/logout.php"> <img src="./images/header.png" alt="header"></a>
+</div>
+<!-- end header -->
+<br>
+<br>
+<!-- Begin main panel -->
+<div id="main-container" class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
+    <!-- Begin Account Summary Info Panel -->
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="pull-right partner-btn-group hidden">
+                    <a role="button" href="select_products.html" class="btn btn-xs prospect-color" >
+                        <span class="fa fa-plus"></span> New Child Account
+                    </a>
+                    <a role="button" href="hierarchy_view.html" class="btn btn-xs prospect-color" >
+                        <span class="fa fa-indent"></span> Back to Hierarchy
+                    </a>
+                </div>
+                <h3 class="panel-title">Account Summary</h3>
+            </div>
+            <div id="account-info-panel" class="panel-body">
+                <div id="loading_account_info" class="loading alert alert-warning" role="alert"> <span class="fa fa-spinner fa-spin"></span> loading... </div>
+                <script id="account-info" type="text/x-handlebars-template">
+                <!-- This script will use Handlebars to dynamically replace variables e.g. {{variable}} -->
+                {{#each msg}}
+                <ul class='account-summary-table list-group'>
+                  <div class="col-xs-12 col-sm-6 col-md-6">
+                    <li class="list-group-item">
+                        <b>Account:</b>
+                        <span class="account_name">{{Name}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Account Balance:</b>
+                        <span class="account_balance">{{currencyFormat Balance}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Credit Balance:</b>
+                        <span class="credit_balance">{{currencyFormat CreditBalance}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Account Currency:</b>
+                        <span class="currency">{{Currency}}</span>
+                    </li>
+                    <input id="account_Id" type="hidden" value="{{accountId}}" />
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-6">
+                    <li class="list-group-item">
+                        <b>Bill Cycle Day:</b>
+                        <span class="bill-cycle-day">{{ordinalFormat BillCycleDay}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Last Invoiced:</b>
+                        <span class="last_invoice_date">{{dateFormat LastInvoiceDate}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Last Paid:</b>
+                        <span class="last_payment_date">{{dateFormat LastPaymentDate}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Last Payment:</b>
+                        <span class="last_payment_amount">{{currencyFormat LastPaymentAmount}}</span>
+                    </li>
+                  </div>
+                </ul>
+                {{/each}}
+                </script>
+            </div>
+        </div>
+    </div> <!-- End Account Summary panel -->
+
+    <!-- Begin Contact Panel -->
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <button class="btn btn-xs prospect-color update_contact pull-right"><span class="fa fa-pencil"></span> Update Contact</button>
+                <button class="btn btn-xs prospect-color save-contact pull-right hidden"><span class="fa fa-save"></span> Save Changes</button>
+                <h3 class="panel-title">Contact Info</h3>
+                <div class="success_message row hidden">
+                    <div class="alert alert-success" role="alert">
+                        <span class="fa fa-check"></span> <span id="contact_success"></span>
+                    </div>
+                </div>
+                <div class="error_message row hidden">
+                    <div class=" alert alert-warning" role="alert">
+                        <span class="fa fa-exclamation-circle"></span> <span id="contact_error"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- Begin Contact Data Output -->
+            <div class="panel-body" id="contact-info-panel">
+                <div id="loading_contact_info" class="loading alert alert-warning" role="alert"> <span class="fa fa-spinner fa-spin"></span> loading... </div>
+                <script id="contact-info" type="text/x-handlebars-template">
+                {{#each msg}} <!-- Start of msg loop -->
+                <ul class='account-summary-table list-group'>
+                  <div class="col-xs-12 col-sm-6 col-md-6">
+                    <li class="list-group-item">
+                        <b>First Name:</b>
+                        <span class="contact-output" id="first_name">{{FirstName}}</span>
+                        <input type="text" id="first_name_input" class="contact-input hidden" value="{{FirstName}}">
+                    </li>
+                    <li class="list-group-item">
+                        <b>Last Name:</b>
+                        <span class="contact-output" id="last_name">{{LastName}}</span>
+                        <input type="text" id="last_name_input" class="contact-input hidden" value="{{LastName}}">
+                    </li>
+                    <li class="list-group-item">
+                        <b>Address:</b>
+                        <span class="contact-output" id="mailing_address">{{Address1}}</span>
+                        <input type="text" id="mailing_address_input" class="contact-input hidden" value="{{Address1}}">
+                    </li>
+                    <li class="list-group-item">
+                        <b>City:</b>
+                        <span class="contact-output" id="mailing_city">{{City}}</span>
+                        <input type="text" id="mailing_city_input" class="contact-input hidden" value="{{City}}">
+                    </li>
+                    <input id="contact_id" type="hidden" value="{{Id}}" />
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-6">
+                    <li class="list-group-item">
+                        <b>State:</b>
+                        <span class="contact-output" id="mailing_state">{{State}}</span>
+                        <input type="text" id="mailing_state_input" class="contact-input hidden" value="{{State}}">
+                    </li>
+                    <li class="list-group-item">
+                        <b>Postal Code:</b>
+                        <span class="contact-output" id="mailing_code">{{PostalCode}}</span>
+                        <input type="text" id="mailing_code_input" class="contact-input hidden" value="{{PostalCode}}">
+                    </li>
+                    <li class="list-group-item">
+                        <b>Country:</b>
+                        <span class="contact-output" id="mailing_country">{{Country}}</span>
+                        <input type="text" id="mailing_country_input" class="contact-input hidden" value="{{Country}}">
+                    </li>
+                  </div>
+                </ul>
+                {{/each}} <!-- End of msg loop -->
+                </script>
+            </div>
+            <!-- End Contact Data Output -->
+        </div>
+    </div> <!-- End Contact panel -->
+
+    <!-- Begin Payment Methods Panel -->
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class='btn-group pull-right' role='group'>
+                  <button type='button' class='btn prospect-color btn-xs dropdown-toggle' data-toggle='dropdown' aria-expanded='false' id='new-pm-dropdown'>
+                    New Payment Method
+                    <span class="fa fa-caret-down"> </span>
+                  </button>
+                  <ul class='dropdown-menu' role='menu' aria-labelledby='new-pm-dropdown'>
+                    <li role='presentation'><a href='javascript:' role='menuitem' tabindex='-1' class='add-pm' id='Credit'>Credit Card</a></li>
+                    <li role='presentation'><a href='javascript:' role='menuitem' tabindex='-1' class='add-pm' id='ACH'>Bank Transfer (ACH)</a></li>
+                  </ul>
+                </div>
+                <h3 class="panel-title">Payment Methods</h3>
+            </div>
+            <div class="panel-body" id="pay-method-panel">
+                <div id="loading_pay_method" class="loading alert alert-warning" role="alert"> <span class="fa fa-spinner fa-spin"></span> loading... </div>
+                <div id="payment-methods">
+                  <!-- This is where all payment methods will be populated via the "payment-methods-summary.handlebars" template file -->
+                </div> <!-- End of Payment Method Handlebars Script -->
+            </div>
+        </div>
+    </div>
+    <div id="zuora_payment"></div>
+    <!-- End Payment Method Panel -->
+
+    <!-- Begin Subscriptions Panel -->
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Subscriptions</h3>
+        </div>
+        <div class="panel-body subscription-summary">
+          <div id="loading_subscriptions" class="loading alert alert-warning" role="alert"> <span class="fa fa-spinner fa-spin"></span> loading... </div>
+          <div id="subscription-info-panel">
+             <!-- This is where all subscriptions will be populated via the "subscription-list.handlebars" template file -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Subscriptions Panel -->
+
+    <!-- Invoice Records Panel -->
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="panel panel-default">
+            <div id="inv_preview_panel" class="panel-heading tabbed-panel-header">
+              <div class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="toggle-tab active">
+                  <a href="#invoice_data" id="invoice_tab" aria-controls="invoice_data" role="tab" data-toggle="tab" aria-expanded="true" data-target="invoice_data">
+                    <h3 class="panel-title">Invoices</h3>
+                  </a>
+                </li>
+                <li role="presentation" class="toggle-tab">
+                  <a href="#preview_data" id="preview_tab" aria-controls="preview_data" role="tab" data-toggle="tab" aria-expanded="false" data-target="preview_data">
+                    <h3 class="panel-title">Billing Preview</h3>
+                  </a>
+                </li>
+              </div>
+            </div>
+
+            <div class="panel-body">
+              <div role="tabpanel" class="tab-pane hidden" id="preview_data" aria-labelledby="preview_tab">
+                <script id="preview-info" type="text/x-handlebars-template">
+                {{#each msg}}
+                <!-- start of invoice records -->
+                {{#if billingPreviewRecords}}
+                <div class="table-responsive">
+                  <table class='table table-striped table-condensed'>
+                    <thead>
+                      <tr>
+                        <th>Period Start</th>
+                        <th>Period End</th>
+                        <th>Billing Date</th>
+                        <th>Quantity</th>
+                        <th>Unit Type</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody id='preview-container' class='preview-summary-table'>
+                    {{#each billingPreviewRecords}}
+                      <tr>
+                        <td>{{dateFormat ServiceStartDate}}</td>
+                        <td>{{dateFormat ServiceEndDate}}</td>
+                        <td>{{dateFormat ChargeDate}}</td>
+                        <td>{{Quantity}}</td>
+                        <td>{{UOM}}</td>
+                        <td>{{currencyFormat ChargeAmount}}</td>
+                      </tr>
+                    {{/each}}
+                    </tbody>
+                  </table>
+                  <!-- End of preview table -->
+                </div>
+                <!-- End of responsive table section -->
+                {{else}}
+                <div class="alert alert-danger" role="alert">
+                  <span class="fa fa-exclamation-circle"></span>
+                  <span class="sr-only">Error:</span>
+                  There are no unbilled usage records on your account
+                </div>
+                {{/if}}
+                {{/each}}
+                <!-- End of msg loop -->
+                </script>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="invoice_data" aria-labelledby="invoice_tab">
+                <div id="loading_invoice_info" class="loading alert alert-warning" role="alert"> <span class="fa fa-spinner fa-spin"></span> loading... </div>
+                <script id="invoice-info" type="text/x-handlebars-template">
+                {{#each msg}}
+                <!-- start of invoice records -->
+                {{#if invoiceRecords}}
+                <div class="table-responsive">
+                  <table class='table table-striped table-condensed'>
+                    <thead>
+                      <tr>
+                        <th>View PDF</th>
+                          <th>Invoice #</th>
+                          <th>Date</th>
+                          <th>Due Date</th>
+                          <th>Tax</th>
+                          <th>Amount</th>
+                          <th>Balance</th>
+                          <th class="pay-input-col">Submit Payment</th>
+                        </tr>
+                    </thead>
+                    <tbody id='invoice-container' class='invoice-summary-table'>
+                    {{#each invoiceRecords}}
+                      <tr class='border_bottom_dashed'>
+                        <td>
+                          <form name='pdf-form' action='./backend/getInvoicePdf.php' method='post'>
+                              <button class='btn btn-default' type='submit'>
+                                  <span class='fa fa-file-pdf-o pdf-button'>
+                                  </span>
+                              </button>
+                              <input name='pdf_inv_id' type='hidden' value='{{InvoiceNumber}}'/>
+                          </form>
+                        <td>{{InvoiceNumber}}</td>
+                        <td>{{dateFormat InvoiceDate}}</td>
+                        <td>{{dateFormat DueDate}}</td>
+                        <td>{{currencyFormat TaxAmount}}</td>
+                        <td>{{currencyFormat Amount}}</td>
+                        <td class='inv-balance'>{{currencyFormat Balance}}</td>
+                        {{#if FullyPaid}}
+                        <td>
+                          <span class="fa fa-check"></span> Paid in Full
+                        </td>
+                        {{else}}
+                        <td class="pay-input-col">
+                          <form class="pay-input-col" name='pay-form' action='./backend/payment.php' method='post'>
+                            <input name='inv_id' type='hidden' value='{{Id}}'/>
+                            <input name='inv_bal' type='hidden' value='{{Balance}}'/>
+                            <div class="input-group input-group-sm">
+                              <input name='pay_amt' type='number' step='any' min='0' class='payment-amount form-control' aria-describedby='paybtn_{{InvoiceNumber}}' placeholder='Enter Amount'/>
+                              <span class='input-group-btn'>
+                                <button type="submit" id='paybtn_{{InvoiceNumber}}' class="btn btn-sm prospect-color">
+                                  <span class='fa fa-money'></span> Pay
+                                </button>
+                              </span>
+                            </div>
+                          </form>
+                        </td>
+                        {{/if}}
+                      </tr>
+                    {{/each}}
+                    </tbody>
+                  </table>
+                  <!-- End of invoice table -->
+                </div>
+                <!-- End of responsive table section -->
+                {{else}}
+                <div class="alert alert-danger" role="alert">
+                  <span class="fa fa-exclamation-circle"></span>
+                  <span class="sr-only">Error:</span>
+                  There are no invoice records on your account
+                </div>
+                {{/if}}
+                {{/each}}
+                <!-- End of msg loop -->
+                </script>
+              </div>
+              <!-- End of collapsable Invoice panel body section -->
+            </div>
+            <!-- End of invoice panel body -->
+        </div>
+        <!-- End of Invoice Panel -->
+    </div>
+    <!-- End of Invoice full width section -->
+
+    <!-- Usage Records Panel -->
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Usage Records</h3>
+            </div>
+            <div id="usage-info-panel" class="panel-body">
+                <div id="loading_usage_info" class="loading alert alert-warning" role="alert"> <span class="fa fa-spinner fa-spin"></span> loading... </div>
+                <!-- Begin Handlebars script to dynamically populate payment methods -->
+                <script id="usage-info" type="text/x-handlebars-template">
+                {{#each msg}}
+                {{#if usageRecords}}
+                <div class="table-responsive">
+                    <table class='table table-striped'>
+                        <thead>
+                            <tr>
+                                <th width='15%'>Subscription #</th>
+                                <th width='28%'>Period</th>
+                                <th width='17%'>Quantity</th>
+                                <th width='17%'>Billing Status</th>
+                                <th width='23%'>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id='usage-container' class='usage-summary-table'>
+                        {{#each usageRecords}}
+                            <tr>
+                                <td>{{SubscriptionNumber}}</td>
+                                <td>{{dateFormat StartDateTime}}
+                           {{#if EndDateTime}}
+                                 - {{dateFormat EndDateTime}}
+                           {{/if}}
+                                </td>
+                                <td>{{Quantity}} {{UOM}}</td>
+                                <td>{{RbeStatus}}</td>
+                                <td>{{Description}}</td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{else}}
+                    <div class="alert alert-danger" role="alert">
+                        <span class="fa fa-exclamation-circle"></span>
+                        <span class="sr-only">Error:</span>
+                        There are no usage records on your account
+                    </div>
+                {{/if}}
+                {{/each}}
+                </script>
+            </div>
+        </div>
+    </div>
+    <!-- Usage Panel End -->
+
+</div>
+
+<div id="footer" class="text-center hidden-xs">
+	<img src="./images/footer.png" alt="footer"><!-- end footer-area -->
+</div>
+
+<!-- end footer -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/function.js" /></script>
+<script type="text/javascript" src="https://static.zuora.com/Resources/libs/hosted/1.2.0/zuora-min.js"/></script>
+<script src="js/handlebars-v2.0.0.js"></script>
+<script src="js/moment.js"></script>
+<script type="application/javascript">
+
+
+	$.ajaxSetup({
+	    // cache: false
+	});
+
+	$(function(){
+
+    getFormatting();
+
+		$.getJSON("backend/index.php?type=IsUserLoggedIn",
+			function(data){
+				// console.log(data);
+				if(data.msg.isLoggedIn) { // if the user is logged in
+					if (data.msg.isPartner == "true"){
+						$('.partner-btn-group').removeClass('hidden');
+					}
+				} else { // redirect to login page if not logged in
+					window.location.replace('login.html');
+				}
+        	}
+		);
+
+		$('#zuora_payment').addClass('hidden');
+		$('#cancel-section').addClass('hidden');
+
+		$(".update_contact").on('click', function(event){
+			inputContactDetail(event);
+		});
+
+		$(".save-contact").on('click', function(event){
+      saveContactChange(event);
+    });
+
+    $("#invoice_tab, #preview_tab").on('click', function(){
+      $('#invoice_tab, #preview_tab').closest('.toggle-tab').toggleClass('active');
+			$('#invoice_data, #preview_data').toggleClass('hidden');
+		});
+
+		$("#finalize-cancel").on('click', function(){
+			var cancelDate = $('#cancel-date').val();
+			if (isValidDate(cancelDate) == false) {
+				$('#date-error').removeClass('hidden');
+				$('#date-error-message').html(' You must enter a valid date (MM/DD/YYYY)');
+			} else if (new Date(cancelDate) < new Date($('#inv-per').val())) {
+				$('#date-error').removeClass('hidden');
+				$('#date-error-message').html(' Cancellation date must be after ' + $('#inv-per').val());
+			} else if (new Date(cancelDate) > new Date($('#sub-end').val())) {
+				$('#date-error').removeClass('hidden');
+				$('#date-error-message').html(' Cancellation date must be on or before ' + $('#sub-end').val());
+			} else {
+				cancelSubscription();
+			}
+		});
+
+    // function that gets all summary sections of the account
+		loadAccountSummaries();
+	});
+
+    function loadAccountSummaries(){
+        getAccountInfo();
+        getContactSummary();
+        getPaymentMethodSummary();
+        getInvoiceInfo();
+        getUsageInfo();
+        getBillingPreview();
+        // getSubscriptionSummary();
+    }
+
+    function getAccountInfo(){
+        var source = $("#account-info").html();
+        var template = Handlebars.compile(source);
+
+        $.getJSON("backend/index.php?type=GetAccountSummary",
+            function(data){
+                console.log(data);
+                $('#loading_account_info').addClass('hidden');
+                // console.log(JSON.stringify(data));
+                $('#account-info-panel').append(template(data));
+            }
+        );
+    }
+
+    function getContactSummary(){
+        var source = $("#contact-info").html();
+        var template = Handlebars.compile(source);
+
+        $.getJSON("backend/index.php?type=GetContactSummary",
+            function(data){
+                console.log(data);
+                // console.log(JSON.stringify(data));
+                $('#loading_contact_info').addClass('hidden');
+                $('#contact-info-panel').append(template(data));
+            }
+        );
+    }
+
+    function getPaymentMethodSummary(){
+        var templateFileName = "payment-methods-summary.handlebars";
+        var targetId = "payment-methods";
+
+        $.getJSON("backend/index.php?type=GetPaymentMethodSummary",
+            function(data){
+                console.log(data);
+                // console.log(JSON.stringify(data));
+                // $('#pay-method-panel').append(template(data));
+                loadExternalTemplate(templateFileName, targetId, data, attachPaymentListeners);
+            }
+        );
+    }
+
+    function attachPaymentListeners() {
+        $('#loading_pay_method').addClass('hidden');
+        $('.add-pm').on('click', function(event){
+            showNewPaymentMethodPanel(event);
+        });
+        $('.btn-make-default').on('click', function(){
+            var $this = $(this);
+            var pmId = $this.data("payment-method-id");
+            // console.log(pmId);
+            changeDefaultPm(pmId);
+        });
+        $('.btn-remove-pm').on('click', function(){
+            var $this = $(this);
+            var pmId = $this.data("payment-method-id");
+            console.log(pmId);
+            removePm(pmId);
+        });
+        // Executing the Subscripton AJAX call after payment call b/c of multiple domain connections
+        getSubscriptionSummary();
+    }
+
+    function getSubscriptionSummary(){
+        var templateFileName = "subscription-list.handlebars";
+        var targetId = "subscription-info-panel";
+
+        $.getJSON("backend/index.php?type=GetSubscriptions",
+            function(data){
+                console.log(data);
+                loadExternalTemplate(templateFileName, targetId, data, attachSubscriptionListeners);
+
+            }
+        );
+    }
+
+    function attachSubscriptionListeners(){
+      $('#loading_subscriptions').addClass('hidden');
+      $('.renew-btn').on('click', function(){
+          var $this = $(this);
+          var subId = $this.data("subscription-id");
+          var renewTerm = $this.data("renewal-term");
+          showRenewalModal(subId, renewTerm);
+      });
+      $('.add-plans').on('click', function(){
+          var $this = $(this);
+          var amendSubId = $this.data("sub-id");
+          setAmendSubId(amendSubId);
+      });
+      $('.remove-plan').on('click', function(){
+          var $this = $(this);
+          var subId = $this.data("sub-id");
+          var rpId = $this.data("rp-id");
+          // $('#removePlan_'+rpId).removeClass('hidden');
+          showRemoveModal(subId, rpId);
+      });
+      $('.cancel-btn').on('click', function(){
+          var $this = $(this);
+          var subId = $this.data("subscription-id");
+          var termType = $this.data("term-type");
+          var lastInvoice = $this.data("last-invoice");
+          $('#cancel-dropdown')
+              .empty()
+              .append($("<option/>")
+              .val("enterDate").text('Enter a Date'));
+          // NEED TO FIX TO SHOW TODAY OR CHARGED THROUGH DATE
+          // if (lastInvoice) {
+          //     $('#cancel-dropdown').append($("<option/>")
+          //         .attr('id', 'inv-per')
+          //         .val(lastInvoice)
+          //         .text('At Invoice Through Date ('+lastInvoice+')'));
+          // }
+          if (termType == 'TERMED'){
+              var endDate = $this.data("end-of-term");
+              $('#cancel-dropdown')
+                  .append($("<option/>")
+                  .attr('id', 'sub-end')
+                  .val(endDate)
+                  .text('End of Term ('+endDate+')'));
+          }
+          showCancelModal(subId);
+      });
+      // attach listener for update-qty link
+      $(".update-qty").on('click', function(){
+        var $this = $(this);
+        var rpId = $this.data('rp-id');
+        $('#upgradeDowngrade-section_'+rpId).addClass('hidden');
+        $('#update-qty-section_'+rpId).removeClass('hidden');
+      });
+      // Begin update charge quantity function
+      $(".update-charge").on('click', function(e){
+          e.preventDefault();
+          var $this = $(this);
+          // console.log($this);
+          var subscriptionId = $this.data('sub-id');
+          var planId = $this.data('rp-id');
+          var chargeId = $this.data('charge-id');
+          var chargeQty = $this.prev('input').val();
+          if ($.isNumeric(chargeQty)) {
+              $('#loading_'+planId).removeClass('hidden').show();
+              showUpdateModal(subscriptionId, planId, chargeId, chargeQty);
+          } else {
+              $('#alert_'+planId).removeClass('hidden').show().fadeOut(5000);
+          }
+      });
+      $(".upgrade-downgrade-link").on('click', function(){
+          var $this = $(this);
+          var updownSku = $this.data('updown-sku');
+          var currentPlanId = $this.data('rp-id');
+          var subId = $this.data('sub-id');
+          $('#update-qty-section_'+currentPlanId).addClass('hidden');
+          $('#upgradeDowngrade-plans_'+currentPlanId).empty();
+          $('#upgradeDowngrade-section_'+currentPlanId).removeClass('hidden');
+          $('#updown_loading_'+currentPlanId).removeClass('hidden');
+          getUpgradeDowngradePlans(subId, updownSku, currentPlanId);
+      });
+      $(".right-side-expander").on('click', function(){
+        var $this = $(this);
+        var rpId = $this.data('rp-id');
+        $('#collapseListGroup_'+rpId).collapse('show');
+      });
+    }
+
+    function getInvoiceInfo(){
+        var source = $("#invoice-info").html();
+        var template = Handlebars.compile(source);
+
+        $.getJSON("backend/index.php?type=GetInvoiceSummary",
+            function(data){
+                console.log(data);
+                $('#loading_invoice_info').addClass('hidden');
+                // console.log(JSON.stringify(data));
+                $('#invoice_data').html(template(data));
+            }
+        );
+    }
+
+    function getBillingPreview(){
+        var source = $("#preview-info").html();
+        var template = Handlebars.compile(source);
+
+        $.getJSON("backend/index.php?type=GetBillingPreview",
+            function(data){
+                console.log(data);
+                $('#preview_data').html(template(data));
+            }
+        );
+    }
+
+    function getUsageInfo(){
+        var source = $("#usage-info").html();
+        var template = Handlebars.compile(source);
+
+        $.getJSON("backend/index.php?type=GetUsageSummary",
+            function(data){
+                console.log(data);
+                $('#loading_usage_info').addClass('hidden');
+                // console.log(JSON.stringify(data));
+                $('#usage-info-panel').html(template(data));
+            }
+        );
+    }
+
+    function setAmendSubId(amendSubId){
+      $.getJSON("backend/index.php?type=SetAmendSubId", {amendSubId: amendSubId},
+        function(data){
+          // console.log(data);
+          window.location.replace('amend.html');
+        }
+      );
+    }
+
+    function showRemoveModal(subId, rpId){
+      $('#modal-confirm-btn').off().on("click", function() {
+        removeRatePlan(subId, rpId);
+      });
+      $('#removePlan_'+rpId).addClass('hidden');
+      $.getJSON("backend/index.php?type=PreviewRemoveRatePlan", {subId: subId, rpId: rpId},
+        function(data){
+          console.log(data);
+          var result = data.msg[0].results;
+          $('#loading_'+rpId).addClass('hidden');
+          $('#previewMessageRenew').addClass('hidden');
+          $('#previewModal').modal('show');
+          $('#previewMessageCost').removeClass('hidden');
+                  if (result.InvoiceDatas.Invoice.Amount < 0) {
+                      $('#charge-or-credit').html('credited');
+                  }
+          $('#previewValue').html(formatMoney(result.InvoiceDatas.Invoice.Amount,
+            $('#formatting_values').data('decimal-places'),
+            $('#formatting_values').data('thousands-separator'),
+            $('#formatting_values').data('decimal-separator'),
+            $('#formatting_values').data('currency-symbol')
+            ));
+        }
+      );
+    }
+
+    function removeRatePlan(subId, rpId){
+      $.getJSON("backend/index.php?type=RemoveRatePlan", {subId: subId, rpId: rpId},
+        function(data){
+          window.location.replace('account_view.html');
+        }
+      );
+    }
+
+    function getUpgradeDowngradePlans(subId, updownSku, currentPlanId){
+        $('#no_products_'+currentPlanId).addClass('hidden');
+        $('#change-plan-message_'+currentPlanId).addClass('hidden');
+        $.getJSON("backend/index.php?type=GetUpgradeDowngradePlans", {updownSku: updownSku},
+            function(data){
+                console.log(data);
+                var prod = data.msg[0];
+                var productName = prod.Name;
+                if (productName){
+                  var result = data.msg[0].results;
+                  $('#up-down-prod-name_'+currentPlanId).html(productName);
+                  $('#change-plan-message_'+currentPlanId).removeClass('hidden');
+                  loadExternalTemplate('updown-plans.handlebars' ,'upgradeDowngrade-plans_'+currentPlanId, data, attachUpDownListeners);
+                } else {
+                  $('#no_products_'+currentPlanId).removeClass('hidden');
+                }
+                hideLoadingWithId('updown_loading_'+currentPlanId)
+            }
+        );
+    }
+
+    function attachUpDownListeners(){
+      $(".add-btn").on('click', function(event){
+        event.preventDefault();
+        var $this = $(this);
+        var subId = $this.closest(".subscription-section").data('sub-id');
+        var addRatePlanId = $this.data('rp-id');
+        var chargeAndQty = $this.closest("form").serializeArray();
+        var removeRatePlanId = $this.closest(".subscription-section").data('current-rp-id');
+        $('#loading_'+removeRatePlanId).removeClass('hidden').show();
+        // console.log(removeRatePlanId);
+        previewPlanUpgradeDowngrade(subId, addRatePlanId, chargeAndQty, removeRatePlanId);
+      });
+    }
+
+	function previewPlanUpgradeDowngrade(subId, addRatePlanId, chargeAndQty, removeRatePlanId){
+		$('#modal-confirm-btn').off().on("click", function() {
+			planUpgradeDowngrade(subId, addRatePlanId, chargeAndQty, removeRatePlanId);
+		});
+		$.getJSON("backend/index.php?type=PreviewPlanUpgradeDowngrade", {subId: subId, addRatePlanId: addRatePlanId, chargeAndQty: chargeAndQty, removeRatePlanId: removeRatePlanId},
+			function(data){
+				console.log(data);
+        var addedAmt = data.msg.addedPlanResult.results.InvoiceDatas.Invoice.Amount;
+        var removedAmt = data.msg.removedPlanResult.results.InvoiceDatas.Invoice.Amount;
+        var totalToInvoice = +addedAmt + +removedAmt;
+        console.log(totalToInvoice);
+
+				$('#loading_'+removeRatePlanId).addClass('hidden');
+        $('#previewMessageRenew').addClass('hidden');
+        $('#previewMessageRenew').addClass('hidden');
+        $('#previewModal').modal('show');
+        $('#previewMessageCost').removeClass('hidden');
+                if (totalToInvoice < 0) {
+                    $('#charge-or-credit').html('credited');
+                } else {
+                  $('#charge-or-credit').html('charged');
+                }
+        $('#previewValue').html(formatMoney(totalToInvoice,
+          $('#formatting_values').data('decimal-places'),
+          $('#formatting_values').data('thousands-separator'),
+          $('#formatting_values').data('decimal-separator'),
+          $('#formatting_values').data('currency-symbol')
+          ));
+      }
+		);
+	}
+
+  function planUpgradeDowngrade(subId, addRatePlanId, chargeAndQty, removeRatePlanId){
+    $.getJSON("backend/index.php?type=PlanUpgradeDowngrade", {subId: subId, addRatePlanId: addRatePlanId, chargeAndQty: chargeAndQty, removeRatePlanId: removeRatePlanId},
+      function(data){
+        console.log(data);
+        window.location.replace('account_view.html');
+      }
+    );
+  }
+
+	function showUpdateModal(subscriptionId, planId, chargeId, chargeQty){
+		$('#modal-confirm-btn').off().on("click", function() {
+			updateRatePlan(subscriptionId, planId, chargeId, chargeQty);
+		});
+		$.getJSON("backend/index.php?type=PreviewUpdateRatePlan", {subId: subscriptionId, rpId: planId, rpcId: chargeId, rpcQty: chargeQty},
+			function(data){
+				console.log(data);
+				var result = data.msg[0].results;
+				$('#loading_'+planId).addClass('hidden');
+				$('#previewMessageRenew').addClass('hidden');
+				$('#previewModal').modal('show');
+				$('#previewMessageCost').removeClass('hidden');
+                if (result.InvoiceDatas.Invoice.Amount < 0) {
+                    $('#charge-or-credit').html('credited');
+                }
+				$('#previewValue').html(formatMoney(result.InvoiceDatas.Invoice.Amount,
+          $('#formatting_values').data('decimal-places'),
+          $('#formatting_values').data('thousands-separator'),
+          $('#formatting_values').data('decimal-separator'),
+          $('#formatting_values').data('currency-symbol')
+          ));
+			}
+		);
+	}
+
+	function updateRatePlan (subscriptionId, planId, chargeId, chargeQty) {
+		$.getJSON("backend/index.php?type=UpdateRatePlan", {subId: subscriptionId, rpId: planId, rpcId: chargeId, rpcQty: chargeQty},
+			function(data){
+				// console.log(data);
+				var result = data.msg[0].results;
+				window.location.replace('account_view.html');
+			}
+		);
+	}
+
+	function showRenewalModal(subscriptionId, renewalTerm){
+		$('#modal-confirm-btn').off().on("click", function() {
+			renewSubscription();
+		});
+		$('#loading_'+subscriptionId).addClass('hidden');
+		$('#previewMessageCost').addClass('hidden');
+		$('#previewModal').modal('show');
+		$('#previewMessageRenew').removeClass('hidden');
+		$('#renewMonths').html(renewalTerm);
+		$('#previewSubId').val(subscriptionId);
+	}
+
+	function renewSubscription(){
+		var subscriptionId = $('#previewSubId').val();
+		$.getJSON("backend/index.php?type=RenewSubscription", {subId: subscriptionId},
+			function(data){
+				// console.log(data);
+				var result = data.msg[0].results;
+				window.location.replace('account_view.html');
+			}
+		);
+	}
+
+	function showCancelModal(subscriptionId){
+		$('#cancelModal').modal('show');
+		$('#cancelSubId').val(subscriptionId);
+	}
+
+	function cancelSubscription(previewOpt){
+		var canDate = $('#cancel-date').val();
+		var subscriptionId = $('#cancelSubId').val();
+		$.getJSON("backend/index.php?type=CancelSubscription", {subId: subscriptionId, cancelDate: canDate},
+			function(data){
+				// console.log(data);
+				var result = data.msg[0].results;
+				$('#cancelModal').modal('hide');
+				$("#cancel-date").val('').prop('disabled', false);
+				// getSubscriptionSummary(); // need to FIX getSubscriptionSummary to not duplicate here
+				window.location.replace('account_view.html');
+			}
+		);
+	}
+
+	//When the user clicks the Update Contact Info button, hide the contact output table, and display the contact input table.
+	function inputContactDetail(){
+		$('.update_contact').addClass('hidden');
+        $('.contact-output').addClass('hidden');
+        $('.contact-input').removeClass('hidden');
+		$('.save-contact').removeClass('hidden');
+	};
+
+	//When the user clicks the Save Changes button on the contact panel, update the Contact record with the user's preferences and return a message.
+	function saveContactChange(){
+		$('.update_contact').removeClass('hidden');
+        $('.contact-output').removeClass('hidden');
+        $('.contact-input').addClass('hidden');
+        $('.save-contact').addClass('hidden');
+
+		//Update Contact
+    var contact_id = $('#contact_id').val();
+		var first_name = $('#first_name_input').val();
+		var mailing_state = $('#mailing_state_input').val();
+		var last_name = $('#last_name_input').val();
+		var mailing_code = $('#mailing_code_input').val();
+		var mailing_address = $('#mailing_address_input').val();
+		var mailing_country = $('#mailing_country_input').val();
+		var mailing_city = $('#mailing_city_input').val();
+		$.getJSON("backend/index.php?type=UpdateContact", {contactId:contact_id, firstName:first_name, lastName:last_name, address:mailing_address, city:mailing_city, state:mailing_state, postalCode:mailing_code, country:mailing_country},
+			function(data){
+				//Get back success result
+                // console.log(data);
+				var success = data.msg[0].Success;
+				if(success){
+                    $('#first_name').text(first_name);
+                    $('#mailing_state').text(mailing_state);
+                    $('#last_name').text(last_name);
+                    $('#mailing_code').text(mailing_code);
+                    $('#mailing_address').text(mailing_address);
+                    $('#mailing_country').text(mailing_country);
+                    $('#mailing_city').text(mailing_city);
+					//If true, show success message, re-render panel
+					$('#contact_success').text('Contact successfully saved!');
+					$('.success_message').removeClass('hidden').fadeOut(3000);
+
+				} else {
+					//If false, show failure message, don't rerender panel
+					var errors = data.msg[0].Errors;
+					var error_output = "";
+					for(var ei in errors){
+						var error = errors[ei];
+						error_output += error.Message + "\n";
+					}
+					$('#contact_error').text(error_output);
+					$('.error_message').removeClass('hidden').fadeOut(3000);
+				}
+        	}
+		);
+
+		$('.update_contact').removeClass('hidden');
+		$('.save-contact').addClass('hidden');
+	}
+
+	function changeDefaultPm(pmId){
+		$.getJSON("backend/index.php?type=UpdatePaymentMethod", {pmId:pmId},
+			function(data){
+                console.log(data);
+                // Need to fix this to use an external Handlebars template
+				getPaymentMethodSummary();
+                // window.location.replace('account_view.html');
+        	}
+		);
+	};
+
+	function removePm(pmId){
+		$.getJSON("backend/index.php?type=RemovePaymentMethod", {pmId:pmId},
+			function(data){
+				// Need to fix this to use an external Handlebars template
+                getPaymentMethodSummary();
+                // window.location.replace('account_view.html');
+        	}
+		);
+	};
+
+	function showNewPaymentMethodPanel(){
+		// HPM 2.0 load
+    $('#loading_pay_method').removeClass('hidden');
+		var type = event.target.id;
+        $.getJSON("backend/index.php?type=SubscribeHPM2", {paymentType: type},
+            function(data){
+                if(!data.success) {
+                    addError(data.msg);
+                } else {
+                    $('#zuora_payment').removeClass('hidden');
+                        loadHostedPage(data);
+                }
+            }
+        );
+	}
+
+	function hideNewPaymentMethodPanel(){
+		$(".z_hppm_iframe").remove();
+		$("#zuora_payment").addClass('hidden');
+
+	}
+
+	function callback_success(ref_id) {
+        getPaymentMethodSummary();
+        hideNewPaymentMethodPanel();
+        // window.location.replace('account_view.html');
+	}
+
+	function formatErrorDisplay(errorField, prefix){
+		var result = '';
+		var displayError = errorField;
+		if(displayError=='NullValue') displayError = "Missing required field.";
+		if(errorField!=null && errorField!=''){
+			result += '<li>' + prefix + displayError + '</li>';
+		}
+		return result;
+	}
+
+	function suspendFunction(){
+		// NEED TO WRITE A SUSPEND FUNCTION
+	}
+
+	// HPM 2.0 Begin
+    // optional params in case prepopulation of certain fields is desired (NOT WORKING?)
+    var prepopulateFields = {};
+
+    // Sample params for rendering iframe on the client side
+    var params = {
+       tenantId: "",
+       id:"",
+       token: "",
+       signature: "",
+       style:"overlay",
+       key: "",
+       submitEnabled:"true",
+       // this line is added to add payment method for existing accounts
+       field_accountId: "",
+       // locale:"fr_FR",
+       url:"https://www.zuora.com/apps/PublicHostedPageLite.do",
+       // paymentGateway: "Test Gateway" //payment gateway name
+    };
+
+    function callback(response) {
+       console.log(response);
+       $('#loading_pay_method').addClass('hidden');
+       if(response.success) {
+          callback_success();
+       } else {
+          alert("errorcode="+response.errorCode + ", errorMessage="+response.errorMessage);
+       }
+    }
+
+    function loadHostedPage(data) {
+      console.log(data.msg[0]);
+      params["id"] = data.msg[0].id;
+      params["tenantId"] = data.msg[0].tenantId;
+      params["token"] = data.msg[0].token;
+      params["signature"] = data.msg[0].signature;
+      params["key"] = data.msg[0].key;
+      // this line is added to add payment method for existing accounts
+      params["field_accountId"] = $('#account_Id').val();
+       Z.render(
+          params,
+          prepopulateFields,
+          callback
+       );
+       $(".loading").addClass('hidden');
+    }
+    // HPM 2.0 End
+</script>
+</body>
+</html>

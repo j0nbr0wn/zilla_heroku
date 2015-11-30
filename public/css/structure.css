@@ -1,0 +1,336 @@
+/* CSS Document */
+
+.chosen-plans{
+    list-style: none outside none;
+    margin-top: -4px;
+    font-weight: bold;
+    /*color: #7F7F7F;*/
+    font-size: 11px;
+    padding: 0px;
+}
+
+.display_field{
+    text-align: right;
+    font-weight: bold;
+}
+.change_products{
+    height: 21px;
+    line-height: 21px;
+    margin-bottom: 20px;
+    font-size: 10px;
+    font-weight: normal;
+}
+
+.plan_list > li:nth-child(odd), .chosen-plans > li:nth-child(odd){
+    background: #fafafa;
+}
+
+.chosen-plans > li:not(:first-of-type), .plan_list > li:not(:first-of-type){
+    border-top: 1px dashed #CCCCCC;
+    border-bottom: 1px dashed #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+}
+
+.chosen-plans > li:not(:last-of-type), .plan_list > li:not(:last-of-type){
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+}
+
+.chosen-plans > li:first-of-type, .plan_list > li:first-of-type{
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px dashed #CCCCCC;
+    -webkit-border-top-right-radius: 4px;
+    -webkit-border-top-left-radius: 4px;
+    -moz-border-top-right-radius: 4px;
+    -moz-border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+.chosen-plans > li:last-of-type, .plan_list > li:last-of-type{
+    border-top: 1px dashed #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    -webkit-border-bottom-right-radius: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    -moz-border-bottom-right-radius: 4px;
+    -moz-border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.chosen-plans > li:only-of-type, .plan_list > li:only-of-type{
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    -webkit-border-bottom-right-radius: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    -moz-border-bottom-right-radius: 4px;
+    -moz-border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.chosen-plans > li.removed  span, .chosen-plans > li.removed h3, .chosen-plans > li.removed ul{
+    text-decoration: line-through;
+}
+
+.mark, li.added .mark{
+    padding-left: 7px;
+    padding-right: 7px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 9px;
+    font-weight: normal;
+    display: inline-block;
+    margin-bottom: 7px;
+}
+
+.mark {
+	border: 1px solid #FF6364;
+	background-color: #FFDEDF;
+	color: #FE0000;
+	text-align: center;
+	width: 150px;
+}
+
+.added .mark {
+    border: 1px solid #A6CC83;
+    background-color: #EBF6E6;
+    color: #6EB53F;
+}
+
+/* Start of pop-up styling */
+
+.cancel-box {
+    margin-left: 300px;
+}
+
+#cancel-date {
+    width: 135px;
+}
+
+a.selected {
+  background-color:#1F75CC;
+  color:white;
+  z-index:100;
+}
+
+#side_nav {
+  position: fixed;
+  top: 40%;
+  z-index: 999;
+}
+
+.required {
+  border-left: 4px solid #80C745;
+  /*vertical-align: middle;
+  display: inline;*/
+}
+
+.not-required {
+  border-left: 4px solid #F5F5F5;
+  /*vertical-align: middle;
+  display: inline;*/
+}
+
+.email-avail {
+    color: #80C745;
+    font-size: 20px;
+}
+.email-unavailable {
+    color: red;
+    font-size: 20px;
+}
+
+.login-link {
+    margin-left: 18px;
+}
+
+/* Start Progress bar CSS */
+
+#progressbar {
+    /*margin-bottom: 120px;*/
+    margin-top: 30px;
+    padding-top: 20px;
+    height: 75px;
+    overflow: hidden;
+    /*CSS counters to number the steps*/
+    counter-reset: step;
+
+
+}
+#progressbar li {
+    list-style-type: none;
+    color: #222222;
+    text-transform: uppercase;
+    font-size: 12px;
+    width: 20%;
+    float: left;
+    position: relative;
+}
+
+#partner-steps #progressbar li{
+    width: 25%;
+}
+
+#progressbar li:before {
+    content: counter(step);
+    counter-increment: step;
+    width: 35px;
+    line-height: 35px;
+    display: block;
+    font-size: 15px;
+    color: white;
+    background: #8A8D8E;
+    border-radius: 30px;
+    margin: 0 auto 5px auto;
+}
+/*progressbar connectors*/
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 4px;
+    background: #8A8D8E;
+    position: absolute;
+    left: -50%;
+    top: 15px;
+    z-index: -1; /*put it behind the numbers*/
+}
+#progressbar li:first-child:after {
+    /*connector not needed before the first step*/
+    content: none;
+}
+/* End Progress bar CSS */
+
+.promo_message {
+    position: relative;
+    bottom: 7px;
+    padding: 1px;
+    font-size: 17px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.charge {
+    margin-left: 10px;
+}
+
+.charge-tier {
+    margin-left: 20px;
+}
+
+.loading.alert {
+    width: 120px;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px;
+    margin: 5px auto 5px auto;
+    text-align: center;
+}
+
+/*#zuora_payment {
+  height: auto;
+  width: auto;
+}
+*/
+
+@media (min-width: 800px) {
+    .z_hppm_iframe {
+    /*height: 550px;*/
+    width: 650px;
+}
+
+.hpm-loading {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+#list-of-products {
+  background-color: #fdfdfd !important;
+}
+
+.prod-image {
+  max-height: 80px;
+  max-width: 80px;
+}
+
+/* begin hierarchy styling */
+.tree li {
+    list-style-type:none;
+    margin:0;
+    padding:10px 5px 0 5px;
+    position:relative
+}
+.tree li::before, .tree li::after {
+    content:'';
+    left:-20px;
+    position:absolute;
+    right:auto
+}
+.tree li::before {
+    border-left:1px solid #999;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px
+}
+.tree li::after {
+    border-top:1px solid #999;
+    height:20px;
+    top:25px;
+    width:25px
+}
+
+.tree li.parent_li>span {
+    cursor:pointer
+}
+.tree>ul>li::before, .tree>ul>li::after {
+    border:0
+}
+.tree li:last-child::before {
+    height:25px
+}
+/* End hierachy styling */
+
+/* some helper classes */
+.no-gutter {
+    padding:0px 0px 0px 0px;
+}
+
+.pay-input-col {
+    width: 225px;
+}
+
+.tabbed-panel-header {
+    padding-bottom: 0px;
+    border-bottom: none;
+}
+
+.input-qty-line {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.list-group-item {
+    word-wrap: break-word;
+}
+
+/* setting the prospect's colors for ALL buttons and progress bar */
+.prospect-color, #progressbar li.active:before,  #progressbar li.active:after {
+    background-color: #2CC76A !important; /* button color */
+    color: #FFFFFF !important; /* button TEXT color */
+}
+
+.prospect-color:hover {
+    background-color: #1e8849 !important; /* button color on HOVER */
+    color: #FFFFFF !important; /* button TEXT color on HOVER */
+}
+
+body {
+    background-color: #FFFFFF !important;
+}
+
+

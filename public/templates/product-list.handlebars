@@ -1,0 +1,140 @@
+{{#each msg}}
+<!-- Begin Base Product Loop -->
+{{#each products}}
+{{#if ../isBase}}
+<div class='panel panel-default base-prod hidden prod-panel' id='product_{{Id}}'>
+{{/if}}
+{{#if ../isAddon}}
+<div class='panel panel-default addon-prod hidden prod-panel' id='product_{{Id}}'>
+{{/if}}
+{{#if ../isPartner}}
+<div class='panel panel-default partner-prod hidden prod-panel' id='product_{{Id}}'>
+{{/if}}
+{{#unless ../isHidden}}
+  <div class='panel-heading'>
+    <div class="pull-right">
+      <a role="button" class="btn btn-default prospect-color plan-expander" id="{{Id}}" data-toggle="collapse" href="#collapseProdGroup_{{Id}}" aria-expanded="false" aria-controls="collapseProdGroup_{{Id}}">
+        <span class="fa fa-list"></span> View Plans
+      </a>
+    </div>
+    <h4>
+      <span class="panel-title">
+        <a role="button" class="expander-link h4 prod-name" data-toggle="collapse" href="#collapseProdGroup_{{Id}}" aria-expanded="false" aria-controls="collapseProdGroup_{{Id}}">
+          {{Name}}
+        </a>
+      </span>
+    </h4>
+  </div>
+  <div class='panel-body'>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class='container-fluid'>
+          <div class='row'>
+            <div class='col-md-2 hidden-xs hidden-sm'>
+              <img class="prod-image" src="./images/prod_image.png" alt="{{Name}}" />
+            </div>
+            <div class='col-md-10'>
+              <h5>
+                <span>Description: </span>
+                {{#if Description}}
+                {{Description}}
+                {{else}}
+                One of our world-class product offerings
+                {{/if}}
+              </h5>
+            </div>
+          </div>
+        </div> <!-- End of product description container -->
+      </div>
+    </div> <!-- End of the product description panel -->
+    <div id="collapseProdGroup_{{Id}}" class="panel-collapse collapse product-plans-section" role="tabpanel" aria-labelledby="collapseProdListHeading_{{Id}}">
+      <div class="panel-group" role="tablist">
+       <!-- Begin get rate plan loop -->
+       {{#each ratePlans}}
+       <!-- start of collapsable RATE PLAN panel -->
+       <form id="rp_{{Id}}">
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="collapsePlanListHeading_{{Id}}">
+            <button class="btn btn-xs prospect-color add-btn pull-right" data-rp-id="{{Id}}"><span class="fa fa-plus"></span> Add Plan</button>
+            <h4 class="panel-title">
+              <a data-toggle="collapse" href="#collapseRPGroup_{{Id}}" aria-expanded="false" aria-controls="collapseRPGroup_{{Id}}">
+                {{Name}}
+              </a>
+              <a role="button" class="btn btn-xs btn-default" data-toggle="collapse" href="#collapseRPGroup_{{Id}}" aria-expanded="false" aria-controls="collapseRPGroup_{{Id}}">
+                  <span class="fa fa-list"></span> View Charges
+              </a>
+            </h4>
+          </div>
+          <div id="collapseRPGroup_{{Id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapsePlanListHeading_{{Id}}">
+            <ul class="list-group">
+              <!-- Begin get charge loop -->
+              {{#each charges}}
+              <li class="list-group-item">
+                <span>{{Name}}</span>
+                {{#if BillingPeriod}}
+                ({{BillingPeriod}} {{ChargeType}})
+                {{else}}
+                ({{ChargeType}})
+                {{/if}}
+                {{#if isTiered}}
+                <a role="button" class="btn btn-xs btn-default" data-toggle="collapse" href="#collapseTable_{{Id}}" aria-expanded="false" aria-controls="collapseTable_{{Id}}">
+                  <span class="fa fa-list"></span> View Tiers
+                </a>
+                {{/if}}
+                {{#if quantifiable}}
+                <div>
+                  {{Uom}}:
+                  <input type='number' name="{{Id}}" {{#if DefaultQuantity}} value="{{DefaultQuantity}}" {{/if}} placeholder="# of {{Uom}}"/>
+                </div>
+                {{/if}}
+                {{#if isTiered}}
+                <div class="collapse" id="collapseTable_{{Id}}"> <!-- Collapsing tier table -->
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <th>Starting</th>
+                        <th>Ending</th>
+                        <th>Units</th>
+                        <th>Price</th>
+                      </thead>
+                      <tbody>
+                        {{/if}}
+                        {{#each chargeTiers}}
+                        {{#if myCurrency}}
+                        {{#if ../../isTiered}}
+                        <tr>
+                          <td>{{StartingUnit}}</td>
+                          {{#if EndingUnit}}
+                          <td>{{EndingUnit}}</td>
+                          {{else}}
+                          <td>&infin;</td>
+                          {{/if}} <!-- end of IF for checking last tier -->
+                          <td>{{../../../Uom}}</td>
+                          <td>{{currencyFormat Price}} {{PriceFormat}}</td>
+                        </tr>
+                        {{else}}
+                        <!-- if it isn't tiered just show the price -->
+                        <span>{{currencyFormat Price}} {{#if ../../../quantifiable}}Per {{../../../../Uom}}{{/if}}</span>
+                        {{/if}} <!-- end of checking if isTiered charge -->
+                        {{/if}} <!-- end of checking currency -->
+                        {{/each}} <!-- End of the charge tier loop -->
+                        {{#if isTiered}}
+                      </tbody>
+                    </table>
+                  </div>
+                </div> <!-- End of collapsing table section -->
+                {{/if}}
+              </li>
+              {{/each}} <!-- End get charge loop -->
+            </ul>
+          </div>
+        </div> <!-- End of rate plan panel -->
+      </form>
+      {{/each}} <!-- End of rate plan loop -->
+    </div><!-- End of product panel -->
+  </div> <!-- End of product panel group -->
+</div> <!-- End of product panel body -->
+</div> <!-- End of product TILE -->
+{{/unless}}
+{{/each}} <!-- End of Product loop -->
+{{/each}} <!-- End of msg loop -->

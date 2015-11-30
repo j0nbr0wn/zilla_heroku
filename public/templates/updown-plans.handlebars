@@ -1,0 +1,81 @@
+{{#each msg}}
+  <!-- Begin Product Panel -->
+  <div class="panel-group" role="tablist">
+   <!-- Begin get rate plan loop -->
+  {{#each ratePlans}}
+    <!-- start of collapsable RATE PLAN panel -->
+    <form id="rp_{{Id}}">
+      <div class="panel panel-success">
+        <div class="panel-heading" role="tab" id="collapsePlanListHeading_{{Id}}">
+          <button class="btn btn-xs prospect-color add-btn pull-right" data-rp-id="{{Id}}"><span class="fa fa-plus"></span> Add Plan</button>
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapseRPGroup_{{Id}}" aria-expanded="false" aria-controls="collapseRPGroup_{{Id}}">
+              {{Name}}
+            </a>
+            <a class="btn btn-default btn-xs" data-toggle="collapse" href="#collapseRPGroup_{{Id}}" aria-expanded="false" aria-controls="collapseRPGroup_{{Id}}">
+              <span class="fa fa-list"></span> View Charges
+            </a>
+          </h4>
+        </div>
+        <div id="collapseRPGroup_{{Id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapsePlanListHeading_{{Id}}">
+          <ul class="list-group">
+            <!-- Begin get charge loop -->
+            {{#each charges}}
+            <li class="list-group-item">
+              <span>{{Name}}</span>
+              {{#if BillingPeriod}}
+                ({{BillingPeriod}} {{ChargeType}})
+              {{else}}
+                ({{ChargeType}})
+              {{/if}}
+              {{#if quantifiable}}
+              <input type='number' class='pull-right' name="{{Id}}" placeholder="# of {{Uom}}"/>
+              {{/if}}
+              {{#if isTiered}}
+              <a role="button" class="btn btn-xs btn-default" data-toggle="collapse" href="#collapseTable_{{Id}}" aria-expanded="false" aria-controls="collapseTable_{{Id}}">
+                <span class="fa fa-list"></span> View Tiers
+              </a>
+              <div class="collapse" id="collapseTable_{{Id}}"> <!-- Collapsing tier table -->
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <th>Starting</th>
+                      <th>Ending</th>
+                      <th>Units</th>
+                      <th>Price</th>
+                    </thead>
+                    <tbody>
+                  {{/if}}
+                  {{#each chargeTiers}}
+                  {{#if myCurrency}}
+                    {{#if ../../isTiered}}
+                    <tr>
+                      <td>{{StartingUnit}}</td>
+                      {{#if EndingUnit}}
+                        <td>{{EndingUnit}}</td>
+                      {{else}}
+                        <td>&infin;</td>
+                      {{/if}} <!-- end of IF for checking last tier -->
+                      <td>{{../../../Uom}}</td>
+                      <td>{{currencyFormat Price}} {{PriceFormat}}</td>
+                    </tr>
+                    {{else}}
+                      <span>{{currencyFormat Price}} Per {{../../../Uom}}</span>
+                    {{/if}} <!-- end of checking if isTiered charge -->
+                  {{/if}} <!-- end of checking currency -->
+                  {{/each}} <!-- End of the charge tier loop -->
+                  {{#if isTiered}}
+                    </tbody>
+                  </table>
+                </div>
+              </div> <!-- End of collapsing table section -->
+              {{/if}}
+            </li>
+            {{/each}} <!-- End get charge loop -->
+          </ul>
+        </div>
+      </div> <!-- End of rate plan panel -->
+    </form>
+  {{/each}} <!-- End of rate plan loop -->
+  </div>
+{{/each}} <!-- End of msg loop -->

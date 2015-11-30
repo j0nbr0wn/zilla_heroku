@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Subscribe</title>
+    <link rel="icon" href="images/zilla.ico">
+    <link href="css/structure.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <!-- Bootstrap links -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+<!-- start Header -->
+<div id="header" class="text-center hidden-xs">
+    <a class="brand" href="login.html"> <img src="./images/header.png" alt="header"></a>
+</div>
+<!-- end header -->
+
+<!-- navbar which will only show on small devices -->
+<nav class="navbar navbar-default navbar-static-top visible-xs-block">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li class="active"><a href="select_products.html">Products</a></li>
+        <li><a href="admin.html">Admin Tests</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<!-- end of navbar -->
+
+<!-- navbar which will NOT show on small devices -->
+<div class="hidden-xs">
+  <div id="side_nav">
+    <a role="button" class="btn btn-default" data-toggle="collapse" href="#nav_links" aria-expanded="false" aria-controls="nav_links" role="tabpanel">
+      <span class="fa fa-bars"></span>
+    </a>
+    <div id="nav_links" class="panel-collapse collapse list-group">
+      <ul class="list-group">
+        <a class="list-group-item" href="index.html">Home</a>
+        <a class="list-group-item" href="login.html">Login</a>
+        <a class="list-group-item" href="select_products.html">Products</a>
+        <a class="list-group-item" href="admin.html">Admin Tests</a>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- end of side navbar -->
+
+<!-- Start Progress Bar -->
+<center>
+    <div>
+        <ul id="progressbar">
+            <li class="active">Base Products</li>
+            <li class="active" id="stepAddon">Add-ons</li>
+            <li class="active" id="stepContacts">Recipient Information</li>
+            <li id="stepSubmit">Submit</li>
+        </ul>
+    </div>
+</center>
+<!-- End Progress Bar -->
+
+<div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
+    <!-- Begin Left-side Contact Form Section -->
+    <div class="col-xs-12 col-sm-12 col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h3 class="panel-title">Enter Contact Information</h3>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                              <span class="input-group-addon">
+                                <span class="fa fa-search"></span>
+                              </span>
+                              <!-- input group will call out to Google's autocomplete APIs -->
+                              <input type="text" class="form-control" id="autocomplete" placeholder="Enter your address..." />
+                            </div><!-- /input-group -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form method="POST" enctype="multipart/form-data" action="backend/subscriber.php" class="form-horizontal">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="Account" >Email</label>
+                            <div class="col-sm-12 col-md-6 required">
+                                <input class="form-control" type='text' id='Account' name='Account' />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="FirstName">First Name</label>
+                            <div class="col-sm-12 col-md-6 required">
+                                <input class="form-control" type='text' id='FirstName' name='FirstName' />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="LastName">Last Name</label>
+                            <div class="col-sm-12 col-md-6 required">
+                                <input class="form-control" type='text' id='LastName' name='LastName' />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="Address">Address</label>
+                             <div class="col-sm-12 col-md-6 required">
+                                <input class="form-control" type='text' id='address1' name='Address' />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="City">City</label>
+                             <div class="col-sm-12 col-md-6 required">
+                                <input class="form-control" type='text' id='city' name='City' />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="State">State</label>
+                             <div class="col-sm-12 col-md-6 required">
+                                <input class="form-control" type='text' id="stateFullName" name='State' />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="Country">Country</label>
+                             <div class="col-sm-12 col-md-6 required">
+                                <select name="Country" id="country" class="form-control">
+                                   <option value='US' data-iso='USA'>United States</option>
+                                    <option value='AF' data-iso='AFG'>Afghanistan</option>
+                                    <option value='AX' data-iso='ALA'>Aland Islands</option>
+                                    <option value='AL' data-iso='ALB'>Albania</option>
+                                    <option value='DZ' data-iso='DZA'>Algeria</option>
+                                    <option value='AS' data-iso='ASM'>American Samoa</option>
+                                    <option value='AD' data-iso='AND'>Andorra</option>
+                                    <option value='AO' data-iso='AGO'>Angola</option>
+                                    <option value='AI' data-iso='AIA'>Anguilla</option>
+                                    <option value='AQ' data-iso='ATA'>Antarctica</option>
+                                    <option value='AG' data-iso='ATG'>Antigua and Barbuda</option>
+                                    <option value='AR' data-iso='ARG'>Argentina</option>
+                                    <option value='AM' data-iso='ARM'>Armenia</option>
+                                    <option value='AW' data-iso='ABW'>Aruba</option>
+                                    <option value='AU' data-iso='AUS'>Australia</option>
+                                    <option value='AT' data-iso='AUT'>Austria</option>
+                                    <option value='AZ' data-iso='AZE'>Azerbaijan</option>
+                                    <option value='BS' data-iso='BHS'>Bahamas</option>
+                                    <option value='BH' data-iso='BHR'>Bahrain</option>
+                                    <option value='BD' data-iso='BGD'>Bangladesh</option>
+                                    <option value='BB' data-iso='BRB'>Barbados</option>
+                                    <option value='BY' data-iso='BLR'>Belarus</option>
+                                    <option value='BE' data-iso='BEL'>Belgium</option>
+                                    <option value='BZ' data-iso='BLZ'>Belize</option>
+                                    <option value='BJ' data-iso='BEN'>Benin</option>
+                                    <option value='BM' data-iso='BMU'>Bermuda</option>
+                                    <option value='BT' data-iso='BTN'>Bhutan</option>
+                                    <option value='BO' data-iso='BOL'>Bolivia</option>
+                                    <option value='BQ' data-iso='BES'>Bonaire, Saint Eustatius and Saba</option>
+                                    <option value='BA' data-iso='BIH'>Bosnia and Herzegovina</option>
+                                    <option value='BW' data-iso='BWA'>Botswana</option>
+                                    <option value='BV' data-iso='BVT'>Bouvet Island</option>
+                                    <option value='BR' data-iso='BRA'>Brazil</option>
+                                    <option value='IO' data-iso='IOT'>British Indian Ocean Territory</option>
+                                    <option value='BN' data-iso='BRN'>Brunei Darussalam</option>
+                                    <option value='BG' data-iso='BGR'>Bulgaria</option>
+                                    <option value='BF' data-iso='BFA'>Burkina Faso</option>
+                                    <option value='BI' data-iso='BDI'>Burundi</option>
+                                    <option value='KH' data-iso='KHM'>Cambodia</option>
+                                    <option value='CM' data-iso='CMR'>Cameroon</option>
+                                    <option value='CA' data-iso='CAN'>Canada</option>
+                                    <option value='CV' data-iso='CPV'>Cape Verde</option>
+                                    <option value='KY' data-iso='CYM'>Cayman Islands</option>
+                                    <option value='CF' data-iso='CAF'>Central African Republic</option>
+                                    <option value='TD' data-iso='TCD'>Chad</option>
+                                    <option value='CL' data-iso='CHL'>Chile</option>
+                                    <option value='CN' data-iso='CHN'>China</option>
+                                    <option value='CX' data-iso='CXR'>Christmas Island</option>
+                                    <option value='CC' data-iso='CCK'>Cocos (Keeling) Islands</option>
+                                    <option value='CO' data-iso='COL'>Colombia</option>
+                                    <option value='KM' data-iso='COM'>Comoros</option>
+                                    <option value='CG' data-iso='COG'>Congo</option>
+                                    <option value='CD' data-iso='COD'>Congo, the Democratic Republic of the</option>
+                                    <option value='CK' data-iso='COK'>Cook Islands</option>
+                                    <option value='CR' data-iso='CRI'>Costa Rica</option>
+                                    <option value='CI' data-iso='CIV'>Cote d'Ivoire</option>
+                                    <option value='HR' data-iso='HRV'>Croatia</option>
+                                    <option value='CU' data-iso='CUB'>Cuba</option>
+                                    <option value='CW' data-iso='CUW'>Curacao</option>
+                                    <option value='CY' data-iso='CYP'>Cyprus</option>
+                                    <option value='CZ' data-iso='CZE'>Czech Republic</option>
+                                    <option value='DK' data-iso='DNK'>Denmark</option>
+                                    <option value='DJ' data-iso='DJI'>Djibouti</option>
+                                    <option value='DM' data-iso='DMA'>Dominica</option>
+                                    <option value='DO' data-iso='DOM'>Dominican Republic</option>
+                                    <option value='EC' data-iso='ECU'>Ecuador</option>
+                                    <option value='EG' data-iso='EGY'>Egypt</option>
+                                    <option value='SV' data-iso='SLV'>El Salvador</option>
+                                    <option value='GQ' data-iso='GNQ'>Equatorial Guinea</option>
+                                    <option value='ER' data-iso='ERI'>Eritrea</option>
+                                    <option value='EE' data-iso='EST'>Estonia</option>
+                                    <option value='ET' data-iso='ETH'>Ethiopia</option>
+                                    <option value='FK' data-iso='FLK'>Falkland Islands (Malvinas)</option>
+                                    <option value='FO' data-iso='FRO'>Faroe Islands</option>
+                                    <option value='FJ' data-iso='FJI'>Fiji</option>
+                                    <option value='FI' data-iso='FIN'>Finland</option>
+                                    <option value='FR' data-iso='FRA'>France</option>
+                                    <option value='GF' data-iso='GUF'>French Guiana</option>
+                                    <option value='PF' data-iso='PYF'>French Polynesia</option>
+                                    <option value='TF' data-iso='ATF'>French Southern Territories</option>
+                                    <option value='GA' data-iso='GAB'>Gabon</option>
+                                    <option value='GM' data-iso='GMB'>Gambia</option>
+                                    <option value='GE' data-iso='GEO'>Georgia</option>
+                                    <option value='DE' data-iso='DEU'>Germany</option>
+                                    <option value='GH' data-iso='GHA'>Ghana</option>
+                                    <option value='GI' data-iso='GIB'>Gibraltar</option>
+                                    <option value='GR' data-iso='GRC'>Greece</option>
+                                    <option value='GL' data-iso='GRL'>Greenland</option>
+                                    <option value='GD' data-iso='GRD'>Grenada</option>
+                                    <option value='GP' data-iso='GLP'>Guadeloupe</option>
+                                    <option value='GU' data-iso='GUM'>Guam</option>
+                                    <option value='GT' data-iso='GTM'>Guatemala</option>
+                                    <option value='GG' data-iso='GGY'>Guernsey</option>
+                                    <option value='GN' data-iso='GIN'>Guinea</option>
+                                    <option value='GW' data-iso='GNB'>Guinea-Bissau</option>
+                                    <option value='GY' data-iso='GUY'>Guyana</option>
+                                    <option value='HT' data-iso='HTI'>Haiti</option>
+                                    <option value='HM' data-iso='HMD'>Heard Island and McDonald Islands</option>
+                                    <option value='VA' data-iso='VAT'>Holy See (Vatican City State)</option>
+                                    <option value='HN' data-iso='HND'>Honduras</option>
+                                    <option value='HK' data-iso='HKG'>Hong Kong</option>
+                                    <option value='HU' data-iso='HUN'>Hungary</option>
+                                    <option value='IS' data-iso='ISL'>Iceland</option>
+                                    <option value='IN' data-iso='IND'>India</option>
+                                    <option value='ID' data-iso='IDN'>Indonesia</option>
+                                    <option value='IR' data-iso='IRN'>Iran, Islamic Republic of</option>
+                                    <option value='IQ' data-iso='IRQ'>Iraq</option>
+                                    <option value='IE' data-iso='IRL'>Ireland</option>
+                                    <option value='IM' data-iso='IMN'>Isle of Man</option>
+                                    <option value='IL' data-iso='ISR'>Israel</option>
+                                    <option value='IT' data-iso='ITA'>Italy</option>
+                                    <option value='JM' data-iso='JAM'>Jamaica</option>
+                                    <option value='JP' data-iso='JPN'>Japan</option>
+                                    <option value='JE' data-iso='JEY'>Jersey</option>
+                                    <option value='JO' data-iso='JOR'>Jordan</option>
+                                    <option value='KZ' data-iso='KAZ'>Kazakhstan</option>
+                                    <option value='KE' data-iso='KEN'>Kenya</option>
+                                    <option value='KI' data-iso='KIR'>Kiribati</option>
+                                    <option value='KP' data-iso='PRK'>Korea, Democratic People's Republic of</option>
+                                    <option value='KR' data-iso='KOR'>Korea, Republic of</option>
+                                    <option value='XK' data-iso='XKX'>Kosovo</option>
+                                    <option value='KW' data-iso='KWT'>Kuwait</option>
+                                    <option value='KG' data-iso='KGZ'>Kyrgyzstan</option>
+                                    <option value='LA' data-iso='LAO'>Lao People's Democratic Republic</option>
+                                    <option value='LV' data-iso='LVA'>Latvia</option>
+                                    <option value='LB' data-iso='LBN'>Lebanon</option>
+                                    <option value='LS' data-iso='LSO'>Lesotho</option>
+                                    <option value='LR' data-iso='LBR'>Liberia</option>
+                                    <option value='LY' data-iso='LBY'>Libyan Arab Jamahiriya</option>
+                                    <option value='LI' data-iso='LIE'>Liechtenstein</option>
+                                    <option value='LT' data-iso='LTU'>Lithuania</option>
+                                    <option value='LU' data-iso='LUX'>Luxembourg</option>
+                                    <option value='MO' data-iso='MAC'>Macao</option>
+                                    <option value='MK' data-iso='MKD'>Macedonia, the former Yugoslav Republic of</option>
+                                    <option value='MG' data-iso='MDG'>Madagascar</option>
+                                    <option value='MW' data-iso='MWI'>Malawi</option>
+                                    <option value='MY' data-iso='MYS'>Malaysia</option>
+                                    <option value='MV' data-iso='MDV'>Maldives</option>
+                                    <option value='ML' data-iso='MLI'>Mali</option>
+                                    <option value='MT' data-iso='MLT'>Malta</option>
+                                    <option value='MH' data-iso='MHL'>Marshall Islands</option>
+                                    <option value='MQ' data-iso='MTQ'>Martinique</option>
+                                    <option value='MR' data-iso='MRT'>Mauritania</option>
+                                    <option value='MU' data-iso='MUS'>Mauritius</option>
+                                    <option value='YT' data-iso='MYT'>Mayotte</option>
+                                    <option value='MX' data-iso='MEX'>Mexico</option>
+                                    <option value='FM' data-iso='FSM'>Micronesia, Federated States of</option>
+                                    <option value='MD' data-iso='MDA'>Moldova, Republic of</option>
+                                    <option value='MC' data-iso='MCO'>Monaco</option>
+                                    <option value='MN' data-iso='MNG'>Mongolia</option>
+                                    <option value='ME' data-iso='MNE'>Montenegro</option>
+                                    <option value='MS' data-iso='MSR'>Montserrat</option>
+                                    <option value='MA' data-iso='MAR'>Morocco</option>
+                                    <option value='MZ' data-iso='MOZ'>Mozambique</option>
+                                    <option value='MM' data-iso='MMR'>Myanmar</option>
+                                    <option value='NA' data-iso='NAM'>Namibia</option>
+                                    <option value='NR' data-iso='NRU'>Nauru</option>
+                                    <option value='NP' data-iso='NPL'>Nepal</option>
+                                    <option value='NL' data-iso='NLD'>Netherlands</option>
+                                    <option value='NC' data-iso='NCL'>New Caledonia</option>
+                                    <option value='NZ' data-iso='NZL'>New Zealand</option>
+                                    <option value='NI' data-iso='NIC'>Nicaragua</option>
+                                    <option value='NE' data-iso='NER'>Niger</option>
+                                    <option value='NG' data-iso='NGA'>Nigeria</option>
+                                    <option value='NU' data-iso='NIU'>Niue</option>
+                                    <option value='NF' data-iso='NFK'>Norfolk Island</option>
+                                    <option value='MP' data-iso='MNP'>Northern Mariana Islands</option>
+                                    <option value='NO' data-iso='NOR'>Norway</option>
+                                    <option value='OM' data-iso='OMN'>Oman</option>
+                                    <option value='PK' data-iso='PAK'>Pakistan</option>
+                                    <option value='PW' data-iso='PLW'>Palau</option>
+                                    <option value='PS' data-iso='PSE'>Palestinian Territory, Occupied</option>
+                                    <option value='PA' data-iso='PAN'>Panama</option>
+                                    <option value='PG' data-iso='PNG'>Papua New Guinea</option>
+                                    <option value='PY' data-iso='PRY'>Paraguay</option>
+                                    <option value='PE' data-iso='PER'>Peru</option>
+                                    <option value='PH' data-iso='PHL'>Philippines</option>
+                                    <option value='PN' data-iso='PCN'>Pitcairn</option>
+                                    <option value='PL' data-iso='POL'>Poland</option>
+                                    <option value='PT' data-iso='PRT'>Portugal</option>
+                                    <option value='PR' data-iso='PRI'>Puerto Rico</option>
+                                    <option value='QA' data-iso='QAT'>Qatar</option>
+                                    <option value='RE' data-iso='REU'>Reunion</option>
+                                    <option value='RO' data-iso='ROU'>Romania</option>
+                                    <option value='RU' data-iso='RUS'>Russian Federation</option>
+                                    <option value='RW' data-iso='RWA'>Rwanda</option>
+                                    <option value='BL' data-iso='BLM'>Saint Barthelemy</option>
+                                    <option value='SH' data-iso='SHN'>Saint Helena</option>
+                                    <option value='KN' data-iso='KNA'>Saint Kitts and Nevis</option>
+                                    <option value='LC' data-iso='LCA'>Saint Lucia</option>
+                                    <option value='MF' data-iso='MAF'>Saint Martin (French part)</option>
+                                    <option value='PM' data-iso='SPM'>Saint Pierre and Miquelon</option>
+                                    <option value='VC' data-iso='VCT'>Saint Vincent and the Grenadines</option>
+                                    <option value='WS' data-iso='WSM'>Samoa</option>
+                                    <option value='SM' data-iso='SMR'>San Marino</option>
+                                    <option value='ST' data-iso='STP'>Sao Tome and Principe</option>
+                                    <option value='SA' data-iso='SAU'>Saudi Arabia</option>
+                                    <option value='SN' data-iso='SEN'>Senegal</option>
+                                    <option value='RS' data-iso='SRB'>Serbia</option>
+                                    <option value='SC' data-iso='SYC'>Seychelles</option>
+                                    <option value='SL' data-iso='SLE'>Sierra Leone</option>
+                                    <option value='SG' data-iso='SGP'>Singapore</option>
+                                    <option value='SX' data-iso='SXM'>Sint Maarten</option>
+                                    <option value='SK' data-iso='SVK'>Slovakia</option>
+                                    <option value='SI' data-iso='SVN'>Slovenia</option>
+                                    <option value='SB' data-iso='SLB'>Solomon Islands</option>
+                                    <option value='SO' data-iso='SOM'>Somalia</option>
+                                    <option value='ZA' data-iso='ZAF'>South Africa</option>
+                                    <option value='GS' data-iso='SGS'>South Georgia and the South Sandwich Islands</option>
+                                    <option value='SS' data-iso='SSD'>South Sudan</option>
+                                    <option value='ES' data-iso='ESP'>Spain</option>
+                                    <option value='LK' data-iso='LKA'>Sri Lanka</option>
+                                    <option value='SD' data-iso='SDN'>Sudan</option>
+                                    <option value='SR' data-iso='SUR'>Suriname</option>
+                                    <option value='SJ' data-iso='SJM'>Svalbard and Jan Mayen</option>
+                                    <option value='SZ' data-iso='SWZ'>Swaziland</option>
+                                    <option value='SE' data-iso='SWE'>Sweden</option>
+                                    <option value='CH' data-iso='CHE'>Switzerland</option>
+                                    <option value='SY' data-iso='SYR'>Syrian Arab Republic</option>
+                                    <option value='TW' data-iso='TWN'>Taiwan</option>
+                                    <option value='TJ' data-iso='TJK'>Tajikistan</option>
+                                    <option value='TZ' data-iso='TZA'>Tanzania, United Republic of</option>
+                                    <option value='TH' data-iso='THA'>Thailand</option>
+                                    <option value='TL' data-iso='TLS'>Timor-Leste</option>
+                                    <option value='TG' data-iso='TGO'>Togo</option>
+                                    <option value='TK' data-iso='TKL'>Tokelau</option>
+                                    <option value='TO' data-iso='TON'>Tonga</option>
+                                    <option value='TT' data-iso='TTO'>Trinidad and Tobago</option>
+                                    <option value='TN' data-iso='TUN'>Tunisia</option>
+                                    <option value='TR' data-iso='TUR'>Turkey</option>
+                                    <option value='TM' data-iso='TKM'>Turkmenistan</option>
+                                    <option value='TC' data-iso='TCA'>Turks and Caicos Islands</option>
+                                    <option value='TV' data-iso='TUV'>Tuvalu</option>
+                                    <option value='UG' data-iso='UGA'>Uganda</option>
+                                    <option value='UA' data-iso='UKR'>Ukraine</option>
+                                    <option value='AE' data-iso='ARE'>United Arab Emirates</option>
+                                    <option value='GB' data-iso='GBR'>United Kingdom</option>
+                                    <option value='US' data-iso='USA'>United States</option>
+                                    <option value='UM' data-iso='UMI'>United States Minor Outlying Islands</option>
+                                    <option value='UY' data-iso='URY'>Uruguay</option>
+                                    <option value='UZ' data-iso='UZB'>Uzbekistan</option>
+                                    <option value='VU' data-iso='VUT'>Vanuatu</option>
+                                    <option value='VE' data-iso='VEN'>Venezuela</option>
+                                    <option value='VN' data-iso='VNM'>Viet Nam</option>
+                                    <option value='VG' data-iso='VGB'>Virgin Islands, British</option>
+                                    <option value='VI' data-iso='VIR'>Virgin Islands, U.S.</option>
+                                    <option value='WF' data-iso='WLF'>Wallis and Futuna</option>
+                                    <option value='EH' data-iso='ESH'>Western Sahara</option>
+                                    <option value='YE' data-iso='YEM'>Yemen</option>
+                                    <option value='ZM' data-iso='ZMB'>Zambia</option>
+                                    <option value='ZW' data-iso='ZWE'>Zimbabwe</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="postalCode">Postal Code</label>
+                            <div class="col-sm-12 col-md-6 required">
+                                <input type='text' id="postalCode" name='postalCode' class="form-control address-input" />
+                            </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="Term">Bill To</label>
+                            <div class="col-sm-12 col-md-6 required">
+                                <select class="form-control" name="invoiceOwner">
+                                  <option value="pbill">Partner Billing</option>
+                                  <option value="direct">Direct Billing</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="Term">Term Type</label>
+                            <div class="col-sm-12 col-md-6 required">
+                                <select class="form-control" name="Term">
+                                  <option value="TERMED">Termed</option>
+                                  <option value="EVERGREEN">Evergreen</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="Init">Initial Term</label>
+                            <div class="col-sm-12 col-md-6 required">
+                                <input class="form-control" id='Init' name='Init' placeholder="# of Months" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="RenewTerm">Renew Term</label>
+                            <div class="col-sm-12 col-md-6 required">
+                                <input class="form-control" id='RenewTerm' name='RenewTerm' placeholder="# of Months" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="AutoRenew">Auto Renew</label>
+                            <div class="col-sm-12 col-md-6 required">
+                                <select class="form-control" name="AutoRenew">
+                                  <option value="yes">Yes</option>
+                                  <option value="no">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-4" for="TermStart">Start Date</label>
+                            <div class="col-sm-12 col-md-6 required">
+                                <input class="form-control" type='text' maxLength='10' id='TermStart' name='TermStart' placeholder="MM/DD/YYYY"/>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button class="btn prospect-color" type="submit">
+                      Subscribe
+                    </button>
+                  </div>
+                </form>
+            </div> <!-- End Panel Body -->
+        </div> <!-- End Panel -->
+    </div> <!-- End Left-side Contact Form Section -->
+    <!-- Begin Right Side Column -->
+    <div class="col-xs-12 col-sm-12 col-md-4">
+        <!-- Begin Chosen Plans Panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <button class='refresh_button btn btn-xs pull-right'>
+                    <span class='fa fa-refresh'></span>
+                </button>
+                <h3 class="panel-title"><span class="fa fa-shopping-cart"></span> Chosen Plans</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="chosen-plans">
+                    <!-- Chosen plans will populate here -->
+                </ul>
+                <a class="btn btn-sm prospect-color" role="button" href="select_products.html">
+                    <span class="fa fa-arrow-left"></span> Back
+                </a>
+            </div>
+        </div>
+        <!-- End Chosen Plans Panel -->
+    </div> <!-- End Right Side Column -->
+</div> <!-- End Central Section -->
+
+<!-- Footer Image begin -->
+<div id="footer" class="text-center hidden-xs">
+    <img src="./images/footer.png" alt="footer">
+</div>
+<!-- Footer Image End -->
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/function.js" /></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+<script type="application/javascript" >
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    $(document).ready(function(){
+
+        getFormatting();
+
+        initializeGoogleAutocomplete();
+        $( "#autocomplete" ).on( "focus", function() {
+            geolocate();
+        });
+
+        $("#infor").hide();
+        $("#loading").hide();
+        $("#email").blur( checkEmailAvailability );
+        $(".email_avail").hide();
+        $(".email_unavail").hide();
+        $('.subtotal_display').hide();
+
+        previewCurrentCart();
+    });
+
+    var previewCurrentCart = function(){
+        //Get cart items
+        $.getJSON("backend/index.php?type=GetInitialCart",
+            function(data){
+                refreshCart(data.msg);
+                //Preview subscription with cart items
+                $('.subtotal_display').hide();
+                $.getJSON("backend/index.php?type=PreviewCurrentCart",
+                    function(data2){
+                        var msg = data2.msg[0];
+                        if(!msg.success) {
+                            var errorMessage = msg.error;
+                            if(msg.error=='EMPTY_CART'){
+                                errorMessage = 'WARNING: Please add at least one item to your cart before subscribing.';
+                            } else if(msg.error=='RATE_PLAN_DOESNT_EXIST'){
+                                errorMessage = 'WARNING: There was an error calculating your total. One or more of your selected items may no longer be in our system. Please remove it before continuing.';
+                            } else if(msg.error=='RATE_PLAN_EXPIRED'){
+                                errorMessage = 'WARNING: One of your selected items is no longer being offered. Please remove it before continuing.';
+                            }
+                            alert( errorMessage );
+                        } else {
+                            $('.subtotal_display').text("First Invoice Total Before Tax: $" +msg.invoiceAmount );
+                            $('.subtotal_display').show();
+                        }
+                    }
+                );
+            }
+        );
+    }
+
+    function refreshCart(msg){
+        var html = "";
+
+        console.log(msg);
+        for(var i in msg[0].cart_items){
+            var cartPlan = msg[0].cart_items[i];
+            html+="<li class='list-group-item'>";
+            html+="  <div class='rateplan_info'>";
+            html+="    <span class='h6'>"+cartPlan.ProductName+": "+cartPlan.ratePlanName+"</span><br>";
+            html+="    <div>";
+            for(var j in cartPlan.charges){
+                var cartPlanCharge = cartPlan.charges[j];
+                html+="  <div><small><span class='fa fa-angle-double-right'></span>  "+cartPlanCharge.Name;
+                if (cartPlanCharge.Qty > -1 && cartPlanCharge.Qty != null && cartPlanCharge.Uom){
+                    html+= " ("+cartPlanCharge.Qty+" x "+cartPlanCharge.Uom+")";
+                } else if (cartPlanCharge.Uom) {
+                    html+= " ("+cartPlanCharge.Uom+")";
+                }
+                html+="  </small></div>";
+                // console.log(cartPlanCharge);
+            }
+            html+="    </div>";
+            html+="  </div>";
+            html+="  <div class='clear-block'></div>";
+            html+="</li>";
+        }
+        $(".chosen-plans").html(html);
+    }
+
+    function checkEmailAvailability(){
+        var uEmail = $('#email').val();
+        $(".email_avail").hide();
+        $(".email_unavail").hide();
+        if(uEmail.length>0){
+            $.getJSON("backend/index.php?type=CheckEmailAvailability", {uEmail: uEmail},
+                function(data){
+                    var avail = data.msg[0];
+                    if(avail){
+                        $(".email_avail").show();
+                    } else {
+                        $(".email_unavail").show();
+                    }
+                }
+            );
+        }
+    }
+
+    function formatErrorDisplay(errorField, prefix){
+        var result = '';
+        var displayError = errorField;
+        if(displayError=='NullValue') displayError = "Missing required field.";
+        if(errorField!=null && errorField!=''){
+            result += '<li>' + prefix + displayError + '</li>';
+        }
+        return result;
+    }
+
+    // Start of Google Autocomplete API functions
+    // This example displays an address form, using the autocomplete feature
+      // of the Google Places API to help users fill in the information.
+
+      var placeSearch, autocomplete;
+
+      function initializeGoogleAutocomplete() {
+        // Create the autocomplete object, restricting the search
+        // to geographical location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {HTMLInputElement} */(document.getElementById('autocomplete')),
+            { types: ['geocode'] });
+        // When the user selects an address from the dropdown,
+        // populate the address fields in the form.
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          fillInAddress();
+        });
+      }
+
+      // [START region_fillform]
+      function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace().address_components;
+        console.log(place);
+
+        // clear out the input fields
+        $('.address-input').val('');
+
+        var address1 = '';
+        // get Google places values for inputs
+        for (var i = 0; i < place.length; i++) {
+          var addressType = place[i].types[0];
+          var addressShortValue = place[i].short_name;
+          var addressLongValue = place[i].long_name;
+          if (addressType == 'street_number'){
+            address1 += addressShortValue;
+          } else if (addressType == 'route'){
+            address1 += ' ' + addressLongValue;
+          } else if (addressType == 'locality'){
+            var city = addressShortValue;
+          } else if (addressType == 'administrative_area_level_1'){
+            var stateValue = addressShortValue;
+            var stateFullName = addressLongValue;
+          } else if (addressType == 'country'){
+            var countryValue = addressShortValue;
+          } else if (addressType == 'postal_code'){
+            var postalCode = addressShortValue;
+          }
+        }
+
+        // see input field values
+        $('#address1').val(address1);
+        $('#city').val(city);
+        $('#state').val(stateValue);
+        $('#stateFullName').val(stateFullName);
+        $('#country').val(countryValue);
+        $('#postalCode').val(postalCode);
+
+      }
+      // [END region_fillform]
+
+      // [START region_geolocation]
+      // Bias the autocomplete object to the user's geographical location,
+      // as supplied by the browser's 'navigator.geolocation' object.
+      function geolocate() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var geolocation = new google.maps.LatLng(
+                position.coords.latitude, position.coords.longitude);
+            var circle = new google.maps.Circle({
+              center: geolocation,
+              radius: position.coords.accuracy
+            });
+            autocomplete.setBounds(circle.getBounds());
+          });
+        }
+      }
+      // [END region_geolocation]
+    // End Google Auto Complete API functions
+
+</script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Order Confirmation</title>
+    <link href="css/structure.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="icon" href="images/zilla.ico">
+</head>
+
+<body>
+<!-- start Header -->
+
+<div id="header" class="text-center hidden-xs">
+    <a class="brand" href="login.html"> <img src="./images/header.png" alt="header" /></a><!-- end header-holder -->
+</div>
+<!-- end header -->
+
+<!-- Begin Central Section -->
+<div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
+    <!-- Begin Left-side Contact Form Section -->
+    <div class="col-xs-12 col-sm-12 col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Subscription Confirmation</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                  <div class="col-md-6">
+                    <li class="list-group-item"><b>Account Name: </b><span class='account_name'></span></li>
+                    <li class="list-group-item"><b>Contact Name: </b><span class='customer_name'></span></li>
+                    <li class="list-group-item"><b>Term Setting: </b><span class='sub_term'></span></li>
+                    <li class="list-group-item"><b>Initial Term: </b><span class='sub_init_term'></span></li>
+                    <li class="list-group-item"><b>Renewal Term: </b><span class='sub_renew_term'></span></li>
+                    <li class="list-group-item"><b>Auto Renew: </b><span class='sub_auto_renew'></span></li>
+                  </div>
+                  <div class="col-md-6">
+                    <li class="list-group-item"><b>Term Start Date: </b><span class='sub_term_start'></span></li>
+                    <li class="list-group-item"><b>Contract Effective Date: </b><span class='sub_contract_effdt'></span></li>
+                    <li class="list-group-item"><b>Service Activation Date: </b><span class='sub_activation_dt'></span></li>
+                    <li class="list-group-item"><b>Customer Acceptance Date: </b><span class='sub_acceptance_dt'></span></li>
+                    <li class="list-group-item"><b>Last Payment Date: </b><span class='last_payment_date'></span></li>
+                  </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End of Left Side Column -->
+    <div class="col-xs-12 col-sm-12 col-md-4">
+        <!-- Begin Chosen Plans Panel -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Subscription Information</h3>
+          </div>
+          <div class="panel-body">
+            <ul class="chosen-plans">
+                <!-- Chosen plans will populate here -->
+            </ul>
+          </div>
+        </div>
+        <!-- End Chosen Plans Panel -->
+        <a role="button" href="hierarchy_view.html" class="btn btn-sm prospect-color" >
+            <span class="fa fa-indent"></span> Back to Hierarchy
+        </a>
+    </div> <!-- End Right Side Column -->
+</div> <!-- End Central Section -->
+<br>
+<br>
+
+<!-- Footer Image begin -->
+<div id="footer" class="text-center hidden-xs">
+    <img src="./images/footer.png" alt="footer">
+</div>
+<!-- Footer Image End -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/function.js" /></script>
+<script type="application/javascript" >
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    $(document).ready(function(){
+
+        $.getJSON("backend/index.php?type=IsUserLoggedIn",
+            function(data){
+                if(!data.success) {
+                    if(data.msg[0].msg=='SESSION_NOT_SET'){
+                        window.location.replace('login.html');
+                    }
+                }
+            }
+        );
+
+        $('.success_message').hide();
+        $('.error_message').hide();
+        $('.account-summary-table').hide();
+        $('.account-summary .true').hide();
+        $('.account-summary .false').hide();
+        $('.account-summary .loading').show();
+
+        validateLoggedInEmail();
+    });
+
+    //Send a request to validate that the email address exists. Upon a successful result, send requests to load all account summaries.
+    function validateLoggedInEmail(){
+        //When successful
+
+        $.getJSON("backend/index.php?type=GetSubConfirmInfo",
+            function(data){
+
+                if(data.msg[0]=='true'){
+                    $('.account_name').html(data.msg[1]);
+                    $('.customer_name').html(data.msg[2]);
+                    $('.sub_term').html(data.msg[3]);
+                    $('.sub_init_term').html(data.msg[4]);
+                    $('.sub_renew_term').html(data.msg[5]);
+                    $('.sub_auto_renew').html(data.msg[6]);
+                    $('.sub_term_start').html(data.msg[7]);
+                    $('.sub_contract_effdt').html(data.msg[8]);
+                    $('.sub_activation_dt').html(data.msg[9]);
+                    $('.sub_acceptance_dt').html(data.msg[10]);
+                    $('.parent_name').html(data.msg[11]);
+                    $('.last_payment_date').html('N/A');
+                    $('.account-summary .loading').hide();
+                    $('.account-summary .true').show();
+                    $('.account-summary-table').fadeIn('fast');
+                    previewCurrentCart();
+                    $('.foward_link').html('<a class="btn_submit" href="hierarchy_view.html">Back To Hierarchy</a>');
+                } else {
+                    $('.account-summary .false').show();
+                    $('.account-summary .loading').hide();
+                    $('.foward_link').html('<a class="btn_submit" href="zBilling.html">Go Back</a>');
+                }
+
+            }
+        );
+    }
+
+    var previewCurrentCart = function(){
+        //Get cart items
+        $.getJSON("backend/index.php?type=GetInitialCart",
+            function(data){
+                refreshCart(data.msg);
+            }
+        );
+    }
+
+    function refreshCart(msg){
+        var html = "";
+
+        console.log(msg);
+        for(var i in msg[0].cart_items){
+            var cartPlan = msg[0].cart_items[i];
+            html+="<li class='list-group-item'>";
+            html+="  <div class='rateplan_info'>";
+            html+="    <span class='h6'>"+cartPlan.ProductName+": "+cartPlan.ratePlanName+"</span><br>";
+            html+="    <div>";
+            for(var j in cartPlan.charges){
+                var cartPlanCharge = cartPlan.charges[j];
+                html+="  <div><small><span class='fa fa-angle-double-right'></span>  "+cartPlanCharge.Name;
+                if (cartPlanCharge.Qty > -1 && cartPlanCharge.Qty != null && cartPlanCharge.Uom){
+                    html+= " ("+cartPlanCharge.Qty+" x "+cartPlanCharge.Uom+")";
+                } else if (cartPlanCharge.Uom) {
+                    html+= " ("+cartPlanCharge.Uom+")";
+                }
+                html+="  </small></div>";
+                // console.log(cartPlanCharge);
+            }
+            html+="    </div>";
+            html+="  </div>";
+            html+="  <div class='clear-block'></div>";
+            html+="</li>";
+        }
+        $(".chosen-plans").html(html);
+
+        $(".btn-remove").on('click', function(event){
+            var buttonId = $(this).attr('id');
+            removeFromCart(buttonId);
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+{{#each msg}}
+{{#if subExpired}} <!-- highlight expired subscriptions for now -->
+  <div class="sub-item col-xs-12 col-sm-12 col-md-12" data-order="2">
+    <div class="panel panel-danger">
+{{else}}
+  <div class="sub-item col-xs-12 col-sm-12 col-md-12" data-order="1">
+    <div class="panel panel-default">
+{{/if}}
+    {{#if endDate}}
+      <div class="panel-heading">{{Name}}: {{dateFormat startDate}} - {{dateFormat endDate}}
+    {{else}} <!-- If the subscription is Evergreen -->
+      <div class="panel-heading">{{Name}}: {{dateFormat startDate}} - Until Cancelled
+    {{/if}}
+    {{#if subExpired}}
+        (Expired)
+    {{else}}
+        <div class="subscription-buttons pull-right">
+          <button role="button" class="btn btn-xs prospect-color cancel-btn" data-subscription-id="{{subId}}" data-term-type="{{termType}}" data-end-of-term="{{dateFormat endDate}}" data-last-invoice="{{dateFormat invoicedThroughDate}}">
+            <span class="fa fa-times"> </span> Cancel
+          </button>
+          <button class="btn btn-xs prospect-color renew-btn" data-subscription-id="{{subId}}" data-renewal-term="{{RenewalTerm}}">
+            <span class="fa fa-refresh"></span> Renew
+          </button>
+          <input type="hidden" class="termType" value="{{termType}}" />
+          <input type="hidden" class="endDate" value="{{endDate}}" />
+        </div> <!-- End of Cancel & Renew Button Group -->
+    {{/if}}
+      </div> <!-- End of Main subscription panel heading -->
+      <div class="panel-body sub-plans_{{subId}}"> <!-- Begin subscription Rate Plans Panel Body -->
+        <div id="rate_plan_panelgroup__{{subId}}" class='panel-group' role='tablist'> <!-- Begin collapse panel -->
+        <!-- Begin active plan loop -->
+        {{#each active_plans}}
+          <div class='panel panel-default'>
+            <div class='panel-heading' role='tab' id='collapseListGroupHeading_{{Id}}'>
+              <!-- RP buttons only show if sub not expired -->
+              {{#unless ../subExpired}}
+              <!-- begin btn group for dropdown -->
+              <div class='btn-group pull-right' role='group'>
+                <button type='button' class='btn prospect-color btn-xs rp-action-menu dropdown-toggle' data-toggle='dropdown' aria-expanded='false' id='rp-action-dropdown'>
+                        Modify Plan <span class='caret'></span>
+                </button>
+                <ul class='dropdown-menu' role='menu' aria-labelledby='rp-action-dropdown'> <!-- Begin list of subscription Modify actions -->
+                  <li role='presentation'>
+                    <a class="add-plans" role='menuitem' tabindex='-1' href='amend.html' data-sub-id="{{../../subId}}"><span class='fa fa-plus'></span> Add Plans</a>
+                  </li>
+                  <li role='presentation'>
+                    <a class='remove-plan' href="javascript:" role='menuitem' tabindex='-1' data-rp-id="{{Id}}" data-sub-id="{{../../subId}}">
+                      <span class='fa fa-trash'></span> Remove Plan
+                    </a>
+                  </li>
+                  <li role='presentation'>
+                    <a class='right-side-expander update-qty' href="javascript:" role='menuitem' tabindex='-1' data-rp-id="{{Id}}">
+                      <span class='fa fa-sort'></span> Update Quantity
+                    </a>
+                  </li>
+                  <li role='presentation'>
+                    <a class='right-side-expander upgrade-downgrade-link' href="javascript:" role='menuitem' tabindex='-1' data-updown-sku='{{ProdId}}' data-rp-id='{{Id}}' data-sub-id="{{../subId}}">
+                      <span class='fa fa-exchange'></span> Swap Plan
+                    </a>
+                  </li>
+                  <li role='presentation'>
+                    <a class='right-side-expander upgrade-downgrade-link' href="javascript:" role='menuitem' tabindex='-1' data-updown-sku='{{UpgradePathSKU__c}}' data-rp-id='{{Id}}' data-sub-id="{{../subId}}">
+                      <span class='fa fa-arrow-up'></span> Upgrade
+                    </a>
+                  </li>
+                  <li role='presentation'>
+                    <a class='right-side-expander upgrade-downgrade-link' href="javascript:" role='menuitem' tabindex='-1' data-updown-sku='{{DowngradePathSKU__c}}' data-rp-id='{{Id}}' data-sub-id="{{../subId}}">
+                      <span class='fa fa-arrow-down'></span> Downgrade
+                    </a>
+                  </li>
+                </ul> <!-- End list of subscription Modify actions -->
+              </div>  <!-- end of button group section for Modify dropdown -->
+              {{/unless}}
+              <!-- end of check for sub expired -->
+              {{ProductName}}: {{Name}}
+            </div> <!-- End panel heading -->
+            <div id='collapseListGroup_{{Id}}' class='panel-collapse collapse' role='tabpanel' aria-labelledby='collapseListGroupHeading_{{Id}}' aria-expanded='false'> <!-- Begin collapsible rate plan list group -->
+              <div class='container-fluid'>
+                <div class='text-center'>
+                  <a class="btn btn-default btn-sm" data-toggle='collapse' href='#collapseListGroup_{{Id}}' aria-expanded='false' aria-controls='collapseListGroup_{{Id}}'>
+                      <span class="fa fa-trash"></span> Discard Changes
+                  </a>
+                </div>
+                <div class='col-md-6'>
+                  <p class="text-center">
+                    <span class="h5">Your Original Charges</span>
+                  </p>
+                  <ul class='list-group'>
+                    <!-- Begin get charge loop -->
+                    {{#each amender_charges}}
+                    <li class='list-group-item list-group-item-danger'>
+                      {{#if adjustableQty}} <!-- if quantity based charge show quantity-->
+                        {{Name}} ({{Quantity}} x {{Uom}})
+                      {{else}} <!-- If it's not a quantity based charge -->
+                        {{Name}}
+                      {{/if}}
+                    </li>
+                    {{/each}}
+                  <!-- End of get charges loop -->
+                  </ul> <!-- End charges list group -->
+                </div> <!-- End of the current rate plan section -->
+                <!-- begin update charges section -->
+                <div id="update-qty-section_{{Id}}" class='col-md-6 hidden'>
+                  <p class="text-center">
+                    <span class="h5">Enter Your New Charges</span>
+                  </p>
+                  <ul class='list-group'>
+                  {{#each amender_charges}}
+                    <!-- if quantity based and recurring charge show an input field-->
+                    {{#if amendableQty}}
+                    <li class='list-group-item list-group-item-success input-qty-line'>
+                      <form class="form-inline">
+                        <div class="form-group">
+                          {{Name}}
+                          <div class="input-group input-group-sm">
+                            <input type='number' min='0' name="new_units_input_{{ProductRatePlanChargeId}}" class='form-control new-qty' aria-describedby='addon_{{ProductRatePlanChargeId}}' placeholder='New # {{Uom}}' />
+                            <span class='update-charge input-group-btn' id='addon_{{ProductRatePlanChargeId}}' data-sub-id='{{../../../subId}}' data-rp-id='{{../../Id}}' data-charge-id='{{ProductRatePlanChargeId}}'>
+                              <button class="btn btn-sm prospect-color">
+                                <span class='fa fa-save'></span> Update
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </form>
+                    </li>
+                    {{else}} <!-- If it's not a quantity based charge -->
+                    <li class='list-group-item list-group-item-success'>
+                      {{Name}}
+                    </li>
+                    {{/if}}
+                  {{/each}}
+                  <!-- End of get charges loop -->
+                  </ul> <!-- End charges list group -->
+                  <div class='loading alert alert-warning hidden' role='alert' id='loading_{{Id}}'>
+                    <span class='fa fa-spinner fa-spin'></span> loading...
+                  </div>
+                  <div class='alert alert-danger hidden' role='alert' id='alert_{{Id}}'>
+                    <span class='fa fa-exclamation-circle'></span> You must enter a valid number
+                  </div>
+                </div> <!-- End of the right-side update plan section -->
+
+                <!-- Begin UpgradeDowngrade right side section -->
+                <div id="upgradeDowngrade-section_{{Id}}" class='col-md-6 hidden current-rp'>
+                  <p class="text-center">
+                    <span class="h5" id="change-plan-message_{{Id}}">Select Your New <span id='up-down-prod-name_{{Id}}'></span> Plans</span>
+                  </p>
+                  <div class='loading alert alert-warning hidden' role='alert' id='updown_loading_{{Id}}'>
+                    <span class='fa fa-spinner fa-spin'></span> loading...
+                  </div>
+                  <div class='alert alert-danger hidden' role='alert' id='no_products_{{Id}}'>
+                    <span class='fa fa-exclamation-circle'></span> No available products found
+                  </div>
+                  <div class="subscription-section" id='upgradeDowngrade-plans_{{Id}}' data-sub-id="{{../subId}}"data-current-rp-id="{{Id}}">
+                  <!-- UpgradeDowngrade Plans Here -->
+                  </div>
+                  <div class='loading alert alert-warning hidden' role='alert' id='loading_{{Id}}'>
+                    <span class='fa fa-spinner fa-spin'></span> loading...
+                  </div>
+                  <div class='alert alert-danger hidden' role='alert' id='alert_{{Id}}'>
+                    <span class='fa fa-exclamation-circle'></span> You must enter a valid number
+                  </div>
+                </div>
+                <!-- End UpgradeDowngrade right side section -->
+              </div> <!-- right & left side fluid container end -->
+            </div> <!-- End of collapsible rate plan list group -->
+          </div> <!-- End of Rate plan panels -->
+          {{/each}}
+          <!-- End of Active Plan loop -->
+          {{#each removed_plans}}
+          <div class='panel panel-default'>
+              <li class='list-group-item list-group-item-danger'> <!-- Begin removed rate plans -->
+                <div class='rateplan_info'>
+                  <span class='rateplan_name'>{{ProductName}}: {{Name}} </span>
+                  <span class='fa fa-exclamation-circle'></span> Removed Effective On: {{dateFormat effectiveDate }}
+                </div>
+                <div class='clear-block'></div>
+              </li>
+          </div>
+          {{/each}} <!-- End of removed plan loop -->
+        </div>
+      </div> <!-- End of Main Subscription Panel -->
+    </div> <!-- End of Subscription panel sizer section -->
+  </div>
+{{/each}}

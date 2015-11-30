@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="css/structure.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="icon" href="images/zilla.ico">
+</head>
+
+<body>
+<!-- navbar which will only show on small devices -->
+<nav class="navbar navbar-default navbar-static-top visible-xs-block">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="select_products.html">Products</a></li>
+        <li><a href="admin.html">Admin Tests</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<!-- end of navbar -->
+
+<!-- navbar which will NOT show on small devices -->
+<div class="hidden-xs">
+  <div id="side_nav">
+    <a role="button" class="btn btn-default" data-toggle="collapse" href="#nav_links" aria-expanded="false" aria-controls="nav_links" role="tabpanel">
+      <span class="fa fa-bars"></span>
+    </a>
+    <div id="nav_links" class="panel-collapse collapse list-group">
+      <ul class="list-group">
+        <a class="list-group-item" href="index.html">Home</a>
+        <a class="list-group-item" href="login.html">Login</a>
+        <a class="list-group-item" href="select_products.html">Products</a>
+        <a class="list-group-item" href="admin.html">Admin Tests</a>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- end of side navbar -->
+
+<div class="text-center visible-md-block visible-lg-block">
+	<a href="login.html"><img src="./images/header.png" alt="login"></a>
+	<a href="select_products.html"><img src="./images/home.png" alt="select products"></a>
+	<a href="select_products.html"><img src="./images/center.png" alt="select products"></a>
+    <img src="./images/footer.png" alt="footer">
+</div>
+
+<div class="hidden-md hidden-lg">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <img src="./images/logo.png" alt="footer">
+                    </div>
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <a href="login.html" role="button" class="btn btn-default navbar-btn btn-lg prospect-color">
+                                    <span class="fa fa-user"></span> Log In
+                                </a>
+                            </div>
+                            <div class="row">
+                                <a href="select_products.html" role="button" class="btn btn-default navbar-btn btn-lg prospect-color">
+                                    <span class="fa fa-shopping-cart"></span> New Customer
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

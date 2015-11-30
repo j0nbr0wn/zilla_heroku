@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="images/zilla.ico">
+	<link href="css/structure.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<title>Change Subscription</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+	<!-- Bootstrap links -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- navbar which will only show on small devices -->
+<nav class="navbar navbar-default navbar-static-top visible-xs-block">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li class="active"><a href="select_products.html">Products</a></li>
+        <li><a href="admin.html">Admin Tests</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<!-- end of navbar -->
+
+<!-- navbar which will NOT show on small devices -->
+<div class="hidden-xs">
+  <div id="side_nav">
+    <a role="button" class="btn btn-default" data-toggle="collapse" href="#nav_links" aria-expanded="false" aria-controls="nav_links" role="tabpanel">
+      <span class="fa fa-bars"></span>
+    </a>
+    <div id="nav_links" class="panel-collapse collapse list-group">
+      <ul class="list-group">
+        <a class="list-group-item" href="index.html">Home</a>
+        <a class="list-group-item" href="login.html">Login</a>
+        <a class="list-group-item" href="select_products.html">Products</a>
+        <a class="list-group-item" href="admin.html">Admin Tests</a>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- end of side navbar -->
+
+<!-- start Header -->
+<div id="header" class="text-center hidden-xs">
+    <a href="account_view.html"> <img src="./images/header.png" alt="header" /></a>
+</div>
+<!-- end header -->
+
+<!-- Begin container for left & right side columns -->
+<br>
+<!-- Start main section with listed products, shopping cart and promos -->
+<div class="container-fluid center-block">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
+		  <!-- Begin Left Side Column -->
+		  <div class="col-xs-12 col-sm-12 col-md-8">
+		    <div id="loading_products" class="loading alert alert-warning" role="alert"> <span class="fa fa-spinner fa-spin"></span> loading... </div>
+			  <!-- Begin Select Products Panel -->
+			  <div id="list-of-products" class="well">
+          <!-- search boxes section -->
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-10">
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <span class="fa fa-search"></span>
+                  </span>
+                  <input type="text" class="form-control" id="prod_search" placeholder="Search product name...">
+                </div><!-- /input-group -->
+              </div>
+              <div class="col-md-2">
+                <a role="button" id="prod_filter_btn" class="btn btn-default" data-toggle="collapse" href="#product_filters" aria-expanded="false" aria-controls="product_filters">
+                  <span class="fa fa-wrench"></span> Filters
+                </a>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div id="product_filters" class="panel-collapse collapse">
+            <div class="container-fluid">
+              <div class="row">
+                <div id="guided-selling-dropdowns-1" class="col-md-6">
+                </div>
+                <div id="guided-selling-dropdowns-2" class="col-md-6">
+                </div>
+              </div>
+            </div>
+          </div>
+			    <div id="products-listing">
+			      <!-- This is where all Products will be populated via the "product-list.handlebars" template file -->
+				  </div> <!-- Products list section here -->
+	      </div><!-- End Select Products Panel -->
+		  </div> <!-- End Left Side Column -->
+			<!-- Begin Right Side Column -->
+			<div class="col-xs-12 col-sm-6 col-md-4">
+			  <!-- Begin Chosen Plans Panel -->
+    		  <div class="panel panel-default">
+				<div class="panel-heading">
+				  <button class='refresh_button btn btn-xs pull-right'>
+					<span class='fa fa-refresh'></span>
+				  </button>
+				  <h3 class="panel-title"><span class="fa fa-shopping-cart"></span> Subscription <span id="current_sub"></span> Plans</h3>
+				</div>
+				<div class="panel-body">
+					<div id="loading_sub" class='alert alert-warning'><span class='fa fa-spinner fa-spin'></span> Loading Subscription</div>
+				  <ul class="chosen-plans">
+					<!-- Chosen plans will populate here -->
+				  </ul>
+				  <a class="btn btn-sm prospect-color" href="account_view.html">
+				  	<span class="fa fa-arrow-left"></span> Back to My Account
+				  </a>
+				</div>
+			  </div> <!-- End Chosen Plans Panel -->
+			  <!-- Begin Amend Preview Panel -->
+			  <div id="amend-panel" class="panel panel-default hidden">
+					<div class="panel-heading">
+						<h3 class="panel-title">Amendment Confirmation</h3>
+					</div>
+					<div class="panel-body">
+			      <!-- <div class="upcoming-changes">
+			        <ul id="amendment_list">
+			        </ul>
+			      </div> -->
+			      <div id="accept-change">
+			        <div id="amendment-detail">
+			       		<div class="panel panel-default">
+			       			<div class="panel-body">
+			       				<div id="loading_confirm" class="loading alert alert-warning" role="alert"> <span class="fa fa-spinner fa-spin"></span> loading... </div>
+			       				<div id="confirm_msg">
+				       			  Are you sure you would like to <span id="amend_type"></span> this product?
+				        			Your account will be <span id="credit_debit"></span> <b><span id="preview_amount"></span></b>.
+				        		</div>
+			       			</div>
+			       		</div>
+			        </div>
+			        <a href="javascript:" id="cancel-amendment" class="btn btn-default btn-xs" >Cancel</a>
+			        <a href="javascript:" id="accept-amendment" class="btn btn-xs prospect-color" >Accept</a>
+			      </div>
+					</div>
+				</div> <!-- End Amend Preview Panel -->
+    	</div> <!-- End Right Side Column -->
+		</div>
+	</div>
+</div>
+<!-- End container for left & right side columns -->
+
+<!-- start footer -->
+</div>
+<div align="center" id="footer">
+<img src="./images/footer.png" alt="footer"><!-- end footer-area -->
+</div>
+<!-- end footer -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/function.js"></script>
+<script src="js/handlebars-v2.0.0.js"></script>
+<script src="js/moment.js"></script>
+<script type="application/javascript">
+
+	$(function(){
+
+		getFormatting();
+		getAmendSubscription();
+		getGuidedSellingValues();
+		listProducts();
+
+		// refresh the catalog when clicked
+		$(".refresh_button").on('click', function(){
+			refreshCatalog();
+		});
+
+		$('#cancel-amendment').on('click', function(){
+			$('#amend-panel').addClass('hidden');
+		});
+	});
+	// End of document ready functions
+
+	function getGuidedSellingValues(){
+      $.getJSON("backend/index.php?type=GetGuidedSellingValues",
+        function(data){
+          console.log(data.msg);
+          dropdownCounter = 1;
+          for(var field in data.msg){
+            // clean up Custom field name into a dropdown label name
+            var dropdownLabel = separateCaps(field.replace('__c', ''));
+            var select_menu = '';
+            var select_menu = '<label class="control-label" for="field">'+dropdownLabel+'</label>';
+            select_menu += '<select id="'+field+'" name="'+field+'" class="form-control dropdown-filter">';
+            select_menu += '  <option value="__null__">-- Select One --</option>';
+            for(var i in data.msg[field]){
+              select_menu += '<option value="'+data.msg[field][i]+'">'+data.msg[field][i]+'</option>';
+            }
+            select_menu += '</select><br>';
+            if (dropdownCounter % 2 != 0){
+              var targetElementId = 'guided-selling-dropdowns-1';
+            } else {
+              var targetElementId = 'guided-selling-dropdowns-2';
+            }
+            dropdownCounter++;
+            $('#'+targetElementId).append(select_menu);
+          }
+        });
+    }
+
+    function prodSearch(prodType){
+	    $('.prod-panel').addClass('hidden');
+	    $('.prod-panel.'+prodType).removeClass('hidden');
+	    $('#prod_search').unbind().bind('keydown keypress keyup change', function() {
+	      $('.dropdown-filter').val('__null__');
+	      var search = this.value.toLowerCase();
+	      var $prodPanels = $('.prod-panel.'+prodType).addClass('hidden');
+	      $prodPanels.filter(function() {
+	          var $prodName = $(this).find('.prod-name').text().toLowerCase();
+	          return $prodName.indexOf(search) >= 0;
+	      }).removeClass('hidden');
+	    });
+	    // add data attributes for each product
+	    $("#prod_filter_btn").on('click', function(){
+	      $.getJSON("backend/index.php?type=ReadCatalog",
+	          function(data){
+	            var prodGroup = data.msg;
+	            // loop through product groups
+	            for (i in prodGroup) {
+	              var prods = prodGroup[i].products;
+	              // loop through the products
+	              for (j in prods) {
+	                // console.log(prods[j].Name);
+	                var filterData = prods[j].filterValues;
+	                // loop through each product's filter data
+	                for (k in filterData){
+	                  var filterObj = filterData[k];
+	                  for (m in filterObj) {
+	                    filterObj[m] = filterObj[m].replace(/\s+/g, '-');
+	                  }
+	                  var targetId = 'product_'+prods[j].Id;
+	                  $('#'+targetId).data('filters', filterObj).attr('data-filters', filterObj); // set the filter data
+	                  // console.log($('#'+targetId).attr('data-filters'));
+	                }
+	              }
+	            }
+	          }
+	      );
+	    });
+	    $('.dropdown-filter').on('change', function(){
+	      $('#prod_search').val('');
+	      if ($(this).val() != '__null__') {
+	        $('.dropdown-filter').not($(this)).val('__null__');
+	        var filterKey = $(this).attr('id');
+	        var filterVal = $(this).val();
+	        var filterToApply = {};
+	        filterToApply[filterKey] = filterVal;
+	        // console.log(filterToApply);
+	        $('.prod-panel').addClass('hidden');
+	        var $shownProdPanels = $('.prod-panel.'+prodType);
+	        $.each($shownProdPanels, function(){
+	          // console.log($(this).data('filters'));
+	          // console.log(JSON.stringify($(this).data('filters')) === JSON.stringify(filterToApply));
+	          if (isEquivalent($(this).data('filters'), filterToApply)){
+	            $(this).removeClass('hidden');
+	          }
+	        });
+	      } else {
+	        $('.dropdown-filter').val('__null__');
+	        $('.prod-panel.'+prodType).removeClass('hidden');
+	      }
+	    });
+	  }
+
+    function refreshCatalog() {
+      $("#loading_products").removeClass('hidden');
+      $.getJSON("backend/index.php?type=RefreshCatalog",
+        function(data){
+          if(!data.success) {
+            addError(data.msg);
+          } else {
+            showResults(data.msg);
+          }
+        });
+    }
+
+    function showResults(){
+      window.location.replace('amend.html');
+    }
+
+	function isNumberKey(evt){
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode > 31 && (charCode < 48 || charCode > 57))
+			return false;
+		return true;
+	}
+
+	function getAmendSubscription() {
+		$("#loading_sub").removeClass('hidden');
+		$.getJSON("backend/index.php?type=GetAmendSubscription",
+			function(data){
+				console.log(data);
+				if(!data.success) {
+					addError(data.msg);
+				}
+				else {
+					loadPlan(data.msg);
+				}
+      }
+		);
+	}
+
+	function loadPlan(msg) {
+		console.log(msg);
+		$("#loading_sub").addClass('hidden');
+		var subName = msg[0].Name;
+		var subId = msg[0].subId;
+		$('#current_sub').html(subName);
+		$('#current_sub').data('sub-id', subId);
+
+		//Set Current Plans
+		var html = "";
+		for(var i in msg[0].active_plans){
+			var pitem = msg[0].active_plans[i];
+			html+="<li class='list-group-item'>";
+      html+="  <div class='rateplan_info'>";
+      html+="    <button class='btn btn-xs prospect-color btn-remove pull-right' data-sub-id='"+msg[0].subId+"' data-rp-id='"+pitem.Id+"'> <span class='fa fa-times'></span> </button>";
+			html+="    <span class='h6'>"+pitem.ProductName+": "+pitem.Name+"</span><br>";
+			 html+=" </div>";
+			html+="  <div class='clear-block'></div>";
+      html+="</li>";
+		}
+		$(".chosen-plans").html(html);
+		$(".btn-remove").on('click', function(){
+			var $this = $(this);
+			var subId = $this.data('sub-id');
+			var rpId = $this.data('rp-id');
+			previewRemoveFromPlan(subId, rpId);
+		});
+
+		// //Show Removed Rateplans
+		// var html = "";
+
+		// for(var i in msg[0].removed_plans){
+		// 	var aitem = msg[0].removed_plans[i];
+		// 	html+="<div class='removed border_bottom_dashed'>";
+  //           html+="    <div class='clear-block'></div>";
+  //           html+="    <div class='rateplan_info'> <span class='rateplan_name'>"+aitem.ProductName+"<br>"+aitem.Name+"</span><br>";
+  //     if(aitem.AmendmentType=='RemoveProduct'){
+		// 		html+="    <div class='mark'>Expires "+formatZDate(aitem.effectiveDate)+"</div>";
+  //           	html+="    </div>";
+  //           	html+="    <div class='clear-block'></div>";
+  //           	html+="</div>";
+  //           }
+		// }
+		// $(".amendment_list").html(html);
+	}
+
+	function previewRemoveFromPlan(subId, rpId) {
+		$('#accept-amendment').off().on('click', function(){
+        removeRatePlan(subId, rpId);
+    });
+		$('#amend-panel').removeClass('hidden');
+		$('#loading_confirm').removeClass('hidden');
+		$('#confirm_msg').addClass('hidden');
+
+		$.getJSON("backend/index.php?type=PreviewRemoveRatePlan",{subId:subId, rpId:rpId},
+			function(data){
+				if(!data.success) {	addError(data.msg); }
+				else {
+					console.log(data);
+					$('#accept-change').removeClass('hidden');
+					var total_removed;
+					if(data.msg[0].results.InvoiceDatas!=undefined){
+						total_removed = data.msg[0].results.InvoiceDatas.Invoice.Amount;
+					} else {
+						total_removed = 0;
+					}
+					var amendType = 'remove';
+					var creditDebit;
+					if(total_removed < 0){
+						creditDebit = 'credited';
+					} else{
+						creditDebit = 'charged';
+					}
+					var formattedTotal = formatMoney(Math.abs(total_removed),
+                                $('#formatting_values').data('decimal-places'),
+                                $('#formatting_values').data('thousands-separator'),
+                                $('#formatting_values').data('decimal-separator'),
+                                $('#formatting_values').data('currency-symbol')
+                                );
+					$('#loading_confirm').addClass('hidden');
+					$('#confirm_msg').removeClass('hidden');
+					$('#preview_amount').html(formattedTotal);
+					$('#credit_debit').html(creditDebit);
+					$('#amend_type').html(amendType);
+				}
+			}
+		);
+	}
+
+	function removeRatePlan(subId, rpId) {
+		$.getJSON("backend/index.php?type=RemoveRatePlan", {subId:subId, rpId:rpId},
+			function(data){
+				console.log(data);
+				$('#accept-change').addClass('hidden');
+				if(!data.success) {	addError(data.msg); }
+				else {
+					$('#amend-panel').addClass('hidden');
+					getAmendSubscription();
+				}
+			}
+		);
+		$('#accept-change').removeClass('hidden');
+	}
+
+	function previewAddRatePlan(subId, rpId, chargeAndQty){
+		$('#accept-amendment').off().on('click', function(){
+        addRatePlan(subId, rpId, chargeAndQty);
+    });
+    $('#amend-panel').removeClass('hidden');
+		$('#loading_confirm').removeClass('hidden');
+		$('#confirm_msg').addClass('hidden');
+		$.getJSON("backend/index.php?type=PreviewAddRatePlan", {subId:subId, rpId:rpId, chargeAndQty:chargeAndQty},
+			function(data){
+				console.log(data);
+				if(!data.success) {	alert(data.msg[0].msg); }
+				else {
+					console.log(data);
+					$('#accept-change').removeClass('hidden');
+					var total_added;
+					if(data.msg[0].results.InvoiceDatas!=undefined){
+						total_added = data.msg[0].results.InvoiceDatas.Invoice.Amount;
+					} else {
+						total_added = 0;
+					}
+					var amendType = 'add';
+					var creditDebit;
+					if(total_added < 0){
+						creditDebit = 'credited';
+					} else{
+						creditDebit = 'charged';
+					}
+					var formattedTotal = formatMoney(Math.abs(total_added),
+                                $('#formatting_values').data('decimal-places'),
+                                $('#formatting_values').data('thousands-separator'),
+                                $('#formatting_values').data('decimal-separator'),
+                                $('#formatting_values').data('currency-symbol')
+                                );
+					$('#loading_confirm').addClass('hidden');
+					$('#confirm_msg').removeClass('hidden');
+					$('#preview_amount').html(formattedTotal);
+					$('#credit_debit').html(creditDebit);
+					$('#amend_type').html(amendType);
+				}
+			}
+		);
+	}
+
+
+	function addRatePlan (subId, rpId, chargeAndQty) {
+		$.getJSON("backend/index.php?type=AddRatePlan", {subId:subId, rpId:rpId, chargeAndQty: chargeAndQty},
+			function(data){
+				$('#accept-change').addClass('hidden');
+				if(!data.success) {	alert(data.msg[0].msg); }
+				else {
+					$('#amend-panel').addClass('hidden');
+					getAmendSubscription();
+				}
+			}
+		);
+		$('#accept-change').removeClass('hidden');
+	}
+
+	function listProducts(){
+	    var templateFileName = "product-list.handlebars";
+      var targetId = "products-listing";
+
+      $.getJSON("backend/index.php?type=ReadCatalog",
+          function(data){
+            console.log(data);
+            loadExternalTemplate(templateFileName, targetId, data, attachProdListeners);
+            // $('#products-listing').append(template(data));
+          }
+      );
+    }
+
+    function attachProdListeners () {
+    	// allow for search based on product type
+	    prodSearch('base-prod');
+
+	  	$('#loading_products').addClass('hidden');
+
+	  	$(".add-btn").on('click', function(){
+				event.preventDefault();
+				var $this = $(this);
+				var chargeAndQty = $this.closest("form").serializeArray();
+				console.log(chargeAndQty);
+				var rpId = $this.data('rp-id');
+				var subId = $('#current_sub').data('sub-id');
+				previewAddRatePlan(subId, rpId, chargeAndQty);
+			});
+    }
+</script>
+</body>
+</html>

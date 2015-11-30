@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Subscribe</title>
+    <link rel="icon" href="images/zilla.ico">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <!-- Bootstrap links -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link href="css/structure.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<!-- start Header -->
+<div id="header" class="text-center hidden-xs">
+    <a href="login.html"> <img src="./images/header.png" alt="header"></a>
+</div>
+<!-- end header -->
+
+<!-- Start Progress Bar -->
+<center>
+    <div>
+        <ul id="progressbar">
+            <li class="active">Base Products</li>
+            <li id="stepAddons" class="active">Add-ons</li>
+            <li id="stepContacts" class="active">Contact Information</li>
+            <li id="stepIframe" class="active">Payment Information</li>
+            <li id="stepSubmit">Submit</li>
+        </ul>
+    </div>
+</center>
+<!-- End Progress Bar -->
+
+<!-- end main -->
+<div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
+    <!-- Begin Left-side Contact Form Section -->
+    <div class="col-xs-12 col-sm-12 col-md-8">
+        <div class="panel panel-default">
+          <div class="panel-heading tabbed-panel-header">
+            <div class="nav nav-tabs tabbed-panel-header" role="tablist">
+              <input type="hidden" id="payType" value="Credit" />
+              <li role="presentation" class="toggle-tab active">
+                <a href="#hpm_data" id="credit_tab" aria-controls="hpm_data" role="tab" data-toggle="tab" aria-expanded="true" data-pay-type="Credit">
+                  <h3 class="panel-title">Credit Card</h3>
+                </a>
+              </li>
+              <li role="presentation" class="toggle-tab">
+                <a href="#hpm_data" id="ach_tab" aria-controls="hpm_data" role="tab" data-toggle="tab" aria-expanded="false" data-pay-type="ACH">
+                  <h3 class="panel-title">Bank Transfer (ACH)</h3>
+                </a>
+              </li>
+              <div class="input-group pull-right">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id='billingInfo' name='billingInfo'>
+                    My billing info is the same
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div> <!-- Panel heading end -->
+          <!-- Begin Panel Body -->
+          <div id="hpm_data" class="panel-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div>
+                  <div class="loading alert alert-warning" role="alert">
+                    <span class="fa fa-spinner fa-spin"></span> loading...
+                  </div>
+                  <!-- HPM section below -->
+                  <div id="zuora_payment" ></div>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Panel Body -->
+        </div> <!-- End Panel -->
+    </div> <!-- End Left-side Contact Form Section -->
+    <!-- Begin Right Side Column -->
+    <div class="col-xs-12 col-sm-12 col-md-4">
+        <!-- Begin Chosen Plans Panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <button class='refresh_button btn btn-xs pull-right'>
+                    <span class='fa fa-refresh'></span>
+                </button>
+                <h3 class="panel-title"><span class="fa fa-shopping-cart"></span> Chosen Plans</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="chosen-plans">
+                    <!-- Chosen plans will populate here -->
+                </ul>
+                <div class="display_field subtotal_display"></div>
+                <span class='clear-block'></span>
+                <a class="btn btn-sm prospect-color" role="button" href="select_products.html">
+                    <span class="fa fa-pencil"></span> Change Plans
+                </a>
+                <a class="btn btn-sm prospect-color" role="button" href="contact_info.html">
+                    <span class="fa fa-arrow-left"></span> Back
+                </a>
+            </div>
+        </div>
+        <!-- End Chosen Plans Panel -->
+        <!-- Begin Terms & Conditions Panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Terms & Conditions</h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <input type="checkbox">
+                    <span>
+                        I have read and agree to the <a href="https://www.zuora.com/terms-conditions/" target="_blank"> Terms of Use</a>
+                    </span>
+                </div>
+            </div>
+        </div> <!-- End Chosen Plans Panel -->
+    </div> <!-- End Right Side Column -->
+</div>
+
+<!-- Begin Footer -->
+<div id="footer" class="text-center hidden-xs">
+    <img src="./images/footer.png" alt="footer"><!-- end footer-area -->
+</div>
+<!-- end footer -->
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/function.js" /></script>
+<script type="text/javascript" src="js/zuora-min.js"/></script>
+<script type="application/javascript" >
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    $(function(){
+        $("#infor").hide();
+        $('.subtotal_display').hide();
+        getFormatting();
+        previewCurrentCart();
+
+        getHPM2info('Credit', 'false');
+
+
+        $('#billingInfo').change(function () {
+            var prefill = $('#billingInfo').prop('checked');
+            var payType = $('#payType').val();
+            // console.log(prefill);
+            // console.log(payType);
+            getHPM2info(payType, prefill);
+        })
+
+        $('#ach_tab, #credit_tab').on('click', function () {
+            $('#credit_tab, #ach_tab').closest('.toggle-tab').toggleClass('active');
+            var currentTab = $(this).data('pay-type');
+            $('#payType').val(currentTab);
+            var payType = $('#payType').val();
+            var prefill = $('#billingInfo').prop('checked');
+            getHPM2info(payType, prefill);
+        })
+
+    });
+
+    function getHPM2info(type, prepop){
+        var prepopulatedFields = {};
+        // HPM 2.0 - call to load page
+        $.getJSON("backend/index.php?type=SubscribeHPM2", {paymentType: type},
+            function(data){
+                if(!data.success) {
+                    addError(data.msg);
+                }
+                else {
+                    // console.log(data.msg[0]);
+                    $('#zuora_payment').empty();
+                    if (prepop == true) {
+                        $.getJSON("backend/index.php?type=GetAddressInfo",
+                        function(data2){
+                            if(!data2.success) {
+                                alert(data2.msg[0].msg);
+                            }
+                            else {
+                                var contactData = data2.msg;
+                                console.log(contactData);
+                                prepopulatedFields['creditCardHolderName'] = contactData[1] + ' ' + contactData[2];
+                                prepopulatedFields['creditCardCountry'] = contactData[6];
+                                prepopulatedFields['creditCardAddress1'] = contactData[3];
+                                prepopulatedFields['creditCardCity'] = contactData[4];
+                                prepopulatedFields['creditCardState'] = contactData[8];
+                                prepopulatedFields['creditCardPostalCode'] = contactData[9];
+                                prepopulatedFields['achBankAccountName'] = contactData[1] + ' ' + contactData[2];
+                            }
+                        });
+                    }
+                    // console.log(prepopulatedFields);
+                    loadHostedPage(data, prepopulatedFields);
+                }
+            }
+        );
+    }
+
+    function previewCurrentCart(){
+        //Get cart items
+        $.getJSON("backend/index.php?type=GetInitialCart",
+            function(data){
+                console.log(data);
+                refreshCart(data.msg);
+                //Preview subscription with cart items
+                $('.subtotal_display').hide();
+                $.getJSON("backend/index.php?type=PreviewCurrentCart",
+                    function(data2){
+                        console.log(data2);
+                        var msg = data2.msg[0];
+                        if(!msg.success) {
+                            var errorMessage = msg.error;
+                            if(msg.error=='EMPTY_CART'){
+                                errorMessage = 'WARNING: Please add at least one item to your cart before subscribing.';
+                            } else if(msg.error=='RATE_PLAN_DOESNT_EXIST'){
+                                errorMessage = 'WARNING: There was an error calculating your total. One or more of your selected items may no longer be in our system. Please remove it before continuing.';
+                            } else if(msg.error=='RATE_PLAN_EXPIRED'){
+                                errorMessage = 'WARNING: One of your selected items is no longer being offered. Please remove it before continuing.';
+                            }
+                            alert( errorMessage );
+                        } else {
+                            $('.subtotal_display').text("Total Due Today: " +formatMoney(msg.invoiceAmount,
+                                $('#formatting_values').data('decimal-places'),
+                                $('#formatting_values').data('thousands-separator'),
+                                $('#formatting_values').data('decimal-separator'),
+                                $('#formatting_values').data('currency-symbol')
+                                ));
+                            $('.subtotal_display').show();
+                        }
+                    }
+                );
+            }
+        );
+    }
+
+    function refreshCart(msg){
+        var html = "";
+
+        // console.log(msg);
+        for(var i in msg[0].cart_items){
+            var cartPlan = msg[0].cart_items[i];
+            html+="<li class='list-group-item'>";
+            html+="  <div class='rateplan_info'>";
+            html+="    <span class='h5'>"+cartPlan.ProductName+": "+cartPlan.ratePlanName+"</span><br>";
+            html+="    <div>";
+            for(var j in cartPlan.charges){
+                var cartPlanCharge = cartPlan.charges[j];
+                html+="  <div><small><span class='fa fa-angle-double-right'></span>  "+cartPlanCharge.Name;
+                if (cartPlanCharge.Qty > -1 && cartPlanCharge.Qty != null && cartPlanCharge.Uom){
+                    html+= " ("+cartPlanCharge.Qty+" x "+cartPlanCharge.Uom+")";
+                } else if (cartPlanCharge.Uom) {
+                    html+= " ("+cartPlanCharge.Uom+")";
+                }
+                html+="  </small></div>";
+                // console.log(cartPlanCharge);
+            }
+            html+="    </div>";
+            html+="  </div>";
+            html+="  <div class='clear-block'></div>";
+            html+="</li>";
+        }
+        $(".chosen-plans").html(html);
+
+        // $(".btn-remove").on('click', function(event){
+        //     var buttonId = $(this).attr('id');
+        //     removeFromCart(buttonId);
+        // });
+    }
+
+    function createSubscription(ref_id){
+        $.getJSON("backend/index.php?type=SubscribeWithCurrentCart", {pmId: ref_id},
+            function(data){
+                console.log(data);
+                if(!data.success) {
+                    alert(data.msg[0].msg);
+                }
+                else {
+                    var result = data.msg[0].result;
+                    if(result.Success){
+                        window.location.replace('account_view.html');
+                    } else {
+                        var html = '';
+                        html = 'Your order was not submitted for the following reasons:<br><ul>' + html;
+                        var error = result['Errors'].Message;
+                        if(error=='SubscriptionData.SubscriptionRatePlanData is required') error = 'You must select at least one product.';
+                        if(error=='Missing required value: Name') error = 'Please enter your email address.';
+                        html += '<li>' + error + '</li>';
+                        html += '</ul>';
+                        $('.error_message').html(html);
+                        $("#infor").show();
+                    }
+                }
+            }
+        );
+    }
+
+    function formatErrorDisplay(errorField, prefix){
+        var result = '';
+        var displayError = errorField;
+        if(displayError=='NullValue') displayError = "Missing required field.";
+        if(errorField!=null && errorField!=''){
+            result += '<li>' + prefix + displayError + '</li>';
+        }
+        return result;
+    }
+
+// HPM 2.0 Begin
+
+    // Sample params for rendering iframe on the client side
+    var params = {
+       tenantId: "",
+       id:"",
+       token: "",
+       signature: "",
+       style:"inline",
+       key: "",
+       submitEnabled:"true",
+       // locale:"fr_FR",
+       url:"https://www.zuora.com/apps/PublicHostedPageLite.do",
+       // paymentGateway: "Test Gateway" //payment gateway name
+    };
+
+    function callback(response) {
+       if(response.success) {
+          createSubscription(response.refId);
+       } else {
+          alert("errorcode="+response.errorCode + ", errorMessage="+response.errorMessage);
+       }
+    }
+
+    function loadHostedPage(data, prepop) {
+      prepopulateFields = prepop;
+      params["id"] = data.msg[0].id;
+      params["tenantId"] = data.msg[0].tenantId;
+      params["token"] = data.msg[0].token;
+      params["signature"] = data.msg[0].signature;
+      params["key"] = data.msg[0].key;
+       Z.render(
+          params,
+          prepopulateFields,
+          callback
+       );
+       $(".loading").hide();
+    }
+    // HPM 2.0 End
+</script>
+
+</body>
+</html>

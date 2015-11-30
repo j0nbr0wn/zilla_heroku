@@ -1,0 +1,13 @@
+{
+  "require" : {
+    "xamin/handlebars.php": "dev-master",
+    "ext-bcmath": "*",
+    "ext-memcached": "*",
+    "ext-soap": "*",
+    "ext-xsl": "*",
+    "herrera-io/silex-pdo": "~1.2"
+  },
+  "require-dev": {
+    "heroku/heroku-buildpack-php": "*"
+  }
+}

@@ -1,0 +1,63 @@
+{{#each msg}} <!-- Loop through the message -->
+{{#if hasPaymentMethods}}
+    {{#each paymentMethodSummaries}} <!-- Start of credit card payment method loop -->
+    <div class='col-xs-12 col-sm-4 col-md-3 pay-method-item' data-order='1'>
+        {{#if expiresSoon}}
+        <div class='panel panel-danger'>
+            <div class='panel-heading'>
+                <span class='fa fa-exclamation-circle'></span> Card Expires Soon!
+            </div>
+        {{else}}
+        <div class='panel panel-default'>
+            <div class='panel-heading'>
+                <span class='fa fa-check'></span> Card Authorized
+            </div>
+        {{/if}}
+            <div class='panel-body'>
+                <span><b><span class='fa fa-credit-card'></span> {{CardType}}</b></span><br>
+                <span class='card_masked_number'>{{MaskedNumber}}</span><br>
+                  Exp: <span class='card_expiration_month'>{{ExpirationMonth}}</span>/<span class='card_expiration_year'>{{ExpirationYear}}</span><br>
+                <span class='card_holder_name'>{{CardHolderName}}</span><br>
+            </div>
+            <div class='panel-footer'>
+            {{#if isDefault}}
+                <span class='fa fa-star'></span><span> Default Payment Method</span>
+            {{else}}
+                <button class='btn btn-xs prospect-color btn-make-default' data-payment-method-id="{{Id}}">Make Default</button>
+                <button class='btn btn-xs prospect-color btn-remove-pm' data-payment-method-id='{{Id}}'><span class='fa fa-times'></span> Remove</button>
+            {{/if}}
+            </div>
+        </div>
+    </div>
+    {{/each}} <!-- End of credit card payment method loop -->
+    {{#each ACHpaymentMethodSummaries}} <!-- Start of ACH payment method loop -->
+    <div class='col-xs-12 col-sm-4 col-md-3 pay-method-item' data-order='2'>
+        <div class='panel panel-default'>
+            <div class='panel-heading'>
+                <span class='fa fa-check'></span> Account Authorized
+            </div>
+            <div class='panel-body'>
+                <span><b><span class='fa fa-university'></span> {{AchAccountType}}</b></span><br>
+                <span>{{AchAccountNumberMask}}</span><br>
+                <span>{{AchBankName}}</span><br>
+                <span>{{AchAccountName}}</span><br>
+            </div>
+            <div class='panel-footer'>
+            {{#if isDefault}}
+                <span class='fa fa-star'></span><span> Default Payment Method</span>
+            {{else}}
+                <button class='btn btn-xs prospect-color btn-make-default' data-payment-method-id="{{Id}}">Make Default</button>
+                <button id='pm_remove_{{Id}}' class='btn btn-xs prospect-color btn-remove-pm'><span class='fa fa-times'></span> Remove</button>
+            {{/if}}
+            </div>
+        </div>
+    </div>
+    {{/each}} <!-- End of ACH payment method loop -->
+    {{else}}
+        <div class="alert alert-danger" role="alert">
+          <span class="fa fa-exclamation-circle"></span>
+          <span class="sr-only">Error:</span>
+          Your account has no electronic payment methods on file
+        </div>
+    {{/if}}
+{{/each}} <!-- End of msg loop -->

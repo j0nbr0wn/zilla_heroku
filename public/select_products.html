@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View Products</title>
+    <link href="css/structure.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  	<!-- Latest compiled and minified Bootstrap CSS -->
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="icon" href="images/zilla.ico">
+</head>
+
+<body>
+
+<!-- navbar which will only show on small devices -->
+<nav class="navbar navbar-default navbar-static-top visible-xs-block">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li class="active"><a href="select_products.html">Products</a></li>
+        <li><a href="admin.html">Admin Tests</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<!-- end of navbar -->
+
+<!-- navbar which will NOT show on small devices -->
+<div class="hidden-xs">
+  <div id="side_nav">
+    <a role="button" class="btn btn-default" data-toggle="collapse" href="#nav_links" aria-expanded="false" aria-controls="nav_links" role="tabpanel">
+      <span class="fa fa-bars"></span>
+    </a>
+    <div id="nav_links" class="panel-collapse collapse list-group">
+      <ul class="list-group">
+        <a class="list-group-item" href="index.html">Home</a>
+        <a class="list-group-item" href="login.html">Login</a>
+        <a class="list-group-item" href="select_products.html">Products</a>
+        <a class="list-group-item" href="admin.html">Admin Tests</a>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- end of side navbar -->
+
+<!-- start Header -->
+<div id="header" class="text-center hidden-xs">
+    <a href="login.html"> <img src="./images/header.png" alt="header" /></a>
+</div>
+<!-- end header -->
+
+<!-- Start Standard Progress Bar -->
+<center id="standard-steps" class="hidden">
+	<div>
+		<ul id="progressbar">
+			<li class="active">Base Products</li>
+			<li id="stepAddons">Add-ons</li>
+			<li id="stepContacts">Contact Information</li>
+			<li id="stepIframe">Payment Information</li>
+			<li id="stepSubmit">Submit</li>
+		</ul>
+	</div>
+</center>
+<!-- End Standard Progress Bar -->
+
+<!-- Start Progress Bar -->
+<center id="partner-steps" class='hidden'>
+  <div>
+    <ul id="progressbar">
+      <li class="active">Base Products</li>
+      <li id="stepAddon">Add-ons</li>
+      <li id="stepContacts">Recipient Information</li>
+      <li id="stepSubmit">Submit</li>
+    </ul>
+  </div>
+</center>
+<!-- End Progress Bar -->
+
+<br>
+<!-- Start main section with listed products, shopping cart and promos -->
+<div class="container-fluid center-block">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
+		  <!-- Begin Left Side Column -->
+		  <div class="col-xs-12 col-sm-12 col-md-8">
+		    <div id="loading_products" class="loading alert alert-warning" role="alert"> <span class="fa fa-spinner fa-spin"></span> loading... </div>
+			  <!-- Begin Select Products Panel -->
+			  <div id="list-of-products" class="well">
+          <div id="partner-section" class="text-center hidden">
+            <div class="panel panel-default">
+              <div class="panel-body-sm">
+                <h5>
+                  Parent Company: <span id="parent-name"></span>
+                  <a role="button" class="btn btn-xs btn-default prospect-color" href="backend/logout.php">
+                    <span class="fa fa-sign-out"></span> Log Out
+                  </a>
+                  <a role="button" class="btn btn-xs btn-default prospect-color" href="hierarchy_view.html">
+                    <span class="fa fa-indent"></span> Back to Hierarchy
+                  </a>
+                </h5>
+              </div>
+            </div>
+          </div>
+          <!-- search boxes section -->
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-10">
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <span class="fa fa-search"></span>
+                  </span>
+                  <input type="text" class="form-control" id="prod_search" placeholder="Search product name...">
+                </div><!-- /input-group -->
+              </div>
+              <div class="col-md-2">
+                <a role="button" id="prod_filter_btn" class="btn btn-default" data-toggle="collapse" href="#product_filters" aria-expanded="false" aria-controls="product_filters">
+                  <span class="fa fa-wrench"></span> Filters
+                </a>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div id="product_filters" class="panel-collapse collapse">
+            <div class="container-fluid">
+              <div class="row">
+                <div id="guided-selling-dropdowns-1" class="col-md-6">
+                </div>
+                <div id="guided-selling-dropdowns-2" class="col-md-6">
+                </div>
+              </div>
+            </div>
+          </div>
+			    <div id="products-listing">
+			      <!-- This is where all Products will be populated via the "product-list.handlebars" template file -->
+				  </div> <!-- Products list section here -->
+	      </div><!-- End Select Products Panel -->
+		  </div> <!-- End Left Side Column -->
+			<!-- Begin Right Side Column -->
+			<div class="col-xs-12 col-sm-6 col-md-4">
+			  <!-- Begin Chosen Plans Panel -->
+    		  <div class="panel panel-default">
+				<div class="panel-heading">
+				  <button class='refresh_button btn btn-xs pull-right'>
+					<span class='fa fa-refresh'></span>
+				  </button>
+				  <h3 class="panel-title"><span class="fa fa-shopping-cart"></span> Chosen Plans</h3>
+				</div>
+				<div class="panel-body">
+				  <ul class="chosen-plans">
+					<!-- Chosen plans will populate here -->
+				  </ul>
+				  <button id="remove_all_button" class="btn btn-sm prospect-color"><span class="fa fa-trash-o"></span> Remove All</button>
+          <a id="back_btn" href="select_products.html" class="btn btn-sm prospect-color"><span class="fa fa-arrow-left"></span> Back</a>
+				  <button id="next_btn" class="btn btn-sm prospect-color">Next <span class="fa fa-arrow-right"></span></button>
+          <a id="add_on_btn" href="contact_info.html" role="button" class="btn btn-sm prospect-color hidden">Next <span class="fa fa-arrow-right"></span></a>
+				</div>
+			  </div> <!-- End Chosen Plans Panel -->
+			  <!-- Begin Promo Panel -->
+			  <div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Have a promotional code?</h3>
+				</div>
+				<div class="panel-body">
+					<input type="text" name="promo_code" id="promo_code"/>
+					<button id="promo_apply" class="btn btn-sm prospect-color">Apply</button>
+				</div>
+				<div id="promo-msg-container" class='alert hidden' role='alert'>
+				  <button id="promo_alert_close" type="button" class="close" aria-label="Close">
+				    <span aria-hidden="true">&times;</span>
+				  </button>
+				  <span id="promo-msg-icon" class="fa"></span>
+				  <span id="promo_message">
+					<!-- Promo success or error will populate here  -->
+				  </span>
+				</div>
+			  </div> <!-- End Promo Panel -->
+    		</div> <!-- End Right Side Column -->
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer -->
+<div class="text-center hidden-xs">
+	<img src="./images/footer.png" alt="footer" />
+</div>
+<!-- end footer -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/function.js"></script>
+<script src="js/handlebars-v2.0.0.js"></script>
+<script src="js/moment.js"></script>
+<script type="application/javascript">
+
+	$(function(){
+
+    getFormatting(showPartnerBtn);
+
+    getGuidedSellingValues();
+
+		$("#infor").hide();
+		$(".loading").show();
+
+		getInitialCart();
+
+    listProducts();
+
+		$("#remove_all_button").on('click', function(){
+			emptyCart();
+		});
+
+		$("#promo_apply").on('click', function(){
+			promoValidate();
+		});
+
+
+		// Start of refresh catalog
+		$(".refresh_button").on('click', function(){
+			console.log('refreshing catalog');
+			refreshCatalog();
+		});
+
+		// set up a temporary storage of promos used
+		$('#promo_apply').data('promosUsed', []);
+
+	});
+  // end of document ready functions
+
+  function getGuidedSellingValues(){
+      $.getJSON("backend/index.php?type=GetGuidedSellingValues",
+        function(data){
+          console.log(data.msg);
+          dropdownCounter = 1;
+          for(var field in data.msg){
+            // clean up Custom field name into a dropdown label name
+            var dropdownLabel = separateCaps(field.replace('__c', ''));
+            var select_menu = '';
+            var select_menu = '<label class="control-label" for="field">'+dropdownLabel+'</label>';
+            select_menu += '<select id="'+field+'" name="'+field+'" class="form-control dropdown-filter">';
+            select_menu += '  <option value="__null__">-- Select One --</option>';
+            for(var i in data.msg[field]){
+              select_menu += '<option value="'+data.msg[field][i]+'">'+data.msg[field][i]+'</option>';
+            }
+            select_menu += '</select><br>';
+            if (dropdownCounter % 2 != 0){
+              var targetElementId = 'guided-selling-dropdowns-1';
+            } else {
+              var targetElementId = 'guided-selling-dropdowns-2';
+            }
+            dropdownCounter++;
+            $('#'+targetElementId).append(select_menu);
+          }
+        });
+    }
+
+    function refreshCatalog() {
+      $(".loading").removeClass('hidden');
+
+      $.getJSON("backend/index.php?type=RefreshCatalog",
+        function(data){
+          if(!data.success) {
+            addError(data.msg);
+          } else {
+            showResults(data.msg);
+          }
+        });
+    }
+
+    function showResults(){
+      window.location.replace('select_products.html');
+    }
+
+  function prodSearch(prodType){
+    $('.prod-panel').addClass('hidden');
+    $('.prod-panel.'+prodType).removeClass('hidden');
+    $('#prod_search').unbind().bind('keydown keypress keyup change', function() {
+      $('.dropdown-filter').val('__null__');
+      var search = this.value.toLowerCase();
+      var $prodPanels = $('.prod-panel.'+prodType).addClass('hidden');
+      $prodPanels.filter(function() {
+          var $prodName = $(this).find('.prod-name').text().toLowerCase();
+          return $prodName.indexOf(search) >= 0;
+      }).removeClass('hidden');
+    });
+    // add data attributes for each product
+    $("#prod_filter_btn").on('click', function(){
+      $.getJSON("backend/index.php?type=ReadCatalog",
+          function(data){
+            var prodGroup = data.msg;
+            // loop through product groups
+            for (i in prodGroup) {
+              var prods = prodGroup[i].products;
+              // loop through the products
+              for (j in prods) {
+                // console.log(prods[j].Name);
+                var filterData = prods[j].filterValues;
+                // loop through each product's filter data
+                for (k in filterData){
+                  var filterObj = filterData[k];
+                  for (m in filterObj) {
+                    filterObj[m] = filterObj[m].replace(/\s+/g, '-');
+                  }
+                  var targetId = 'product_'+prods[j].Id;
+                  $('#'+targetId).data('filters', filterObj).attr('data-filters', filterObj); // set the filter data
+                  // console.log($('#'+targetId).attr('data-filters'));
+                }
+              }
+            }
+          }
+      );
+    });
+    $('.dropdown-filter').on('change', function(){
+      $('#prod_search').val('');
+      if ($(this).val() != '__null__') {
+        $('.dropdown-filter').not($(this)).val('__null__');
+        var filterKey = $(this).attr('id');
+        var filterVal = $(this).val();
+        var filterToApply = {};
+        filterToApply[filterKey] = filterVal;
+        // console.log(filterToApply);
+        $('.prod-panel').addClass('hidden');
+        var $shownProdPanels = $('.prod-panel.'+prodType);
+        $.each($shownProdPanels, function(){
+          // console.log($(this).data('filters'));
+          // console.log(JSON.stringify($(this).data('filters')) === JSON.stringify(filterToApply));
+          if (isEquivalent($(this).data('filters'), filterToApply)){
+            $(this).removeClass('hidden');
+          }
+        });
+      } else {
+        $('.dropdown-filter').val('__null__');
+        $('.prod-panel.'+prodType).removeClass('hidden');
+      }
+    });
+  }
+
+  function showPartnerBtn(data){
+      if (data.msg.isPartner == "true"){
+          $('#partner-steps').removeClass('hidden');
+          $('#partner-section').removeClass('hidden');
+          $('#add_on_btn').attr('href', 'zBilling.html');
+          $('#parent-name').html(data.msg.isLoggedIn);
+      } else {
+          $('#standard-steps').removeClass('hidden');
+      }
+      $("#next_btn").on('click', function(){
+        // show the add-on products only
+        // $('#prod_filter_btn').click();
+        prodSearch('addon-prod');
+        $('#prod_search').val('');
+        $('.dropdown-filter').val('__null__');
+        $("#next_btn").addClass("hidden");
+        $("#add_on_btn").removeClass("hidden");
+        $("#stepAddons").addClass("active");
+      });
+  }
+
+	function listProducts(){
+	  var templateFileName = "product-list.handlebars";
+      var targetId = "products-listing";
+
+      $.getJSON("backend/index.php?type=ReadCatalog",
+          function(data){
+            console.log(data);
+            loadExternalTemplate(templateFileName, targetId, data, attachProdListeners);
+            // $('#products-listing').append(template(data));
+          }
+      );
+    }
+
+  function attachProdListeners() {
+    // allow for search based on product type
+    prodSearch('base-prod');
+
+  	$('#loading_products').addClass('hidden');
+
+  	$(".add-btn").on('click', function(){
+			event.preventDefault();
+			var $this = $(this);
+			var chargeAndQty = $this.closest("form").serializeArray();
+			console.log(chargeAndQty);
+			var rpToAdd = $this.data('rp-id');
+			addToCart(rpToAdd, chargeAndQty);
+		});
+
+    // Need to FIX dynamically changing button text show/hide
+		// change the plan expander button text and icon to hide or show
+		// $(".plan-expander, .expander-link")
+		// 	.off()
+		// 	.on('click', function(){
+		// 		var $this = $(this);
+  //       // console.log($this.closest('.prod-panel').data('filter-array'));
+		// 		if ($this.hasClass('expander-link')) {
+		// 			$this = $(this).closest('.panel-heading').find('.plan-expander');
+		// 		}
+
+				// $(".product-plans-section").off()
+				// 	.on('show.bs.collapse' , function(){
+				// 		$this.html("<span class='fa fa-chevron-up'></span> Hide Plans");
+				// 	})
+				// 	.on('hide.bs.collapse' , function(){
+				// 		$this.html("<span class='fa fa-list'></span> Show Plans");
+				// 	})
+			// });
+  }
+
+	function addToCart(rpToAdd, chargeAndQty){
+		// Set the Qty to 1 if the charge input is left blank
+		for(var i in chargeAndQty){
+			if ($.isNumeric(chargeAndQty[i].value) == false) {
+				chargeAndQty[i].value = "1";
+			}
+		}
+		console.log(chargeAndQty);
+		$.getJSON("backend/index.php?type=AddItemToCart", {ratePlanId:rpToAdd, chargeAndQty:chargeAndQty},
+			function(data){
+				console.log(data);
+				if(!data.success) {
+					addError(data.msg);
+				}
+				else {
+					refreshCart(data.msg);
+				}
+        	}
+		);
+	};
+
+	function isNumberKey(evt){
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode > 31 && (charCode < 48 || charCode > 57))
+			return false;
+		return true;
+	}
+
+	var emptyCart = function(){
+		$.getJSON("backend/index.php?type=EmptyCart",
+			function(data){
+				refreshCart(data.msg);
+        	}
+		);
+	}
+
+	var getInitialCart = function(){
+		$.getJSON("backend/index.php?type=GetInitialCart",
+			function(data){
+				if(!data.success) {	addError(data.msg); }
+				else { refreshCart(data.msg); }
+        	}
+		);
+	}
+
+	function refreshCart(msg){
+		var html = "";
+
+		console.log(msg);
+		for(var i in msg[0].cart_items){
+        var cartPlan = msg[0].cart_items[i];
+        html+="<li class='list-group-item'>";
+        html+="  <div class='rateplan_info'>";
+        html+="    <button class='btn btn-xs prospect-color btn-remove pull-right' id='remove_item_"+cartPlan.itemId+"'> <span class='fa fa-times'></span> </button>";
+        html+="    <span class='h6'>"+cartPlan.ProductName+": "+cartPlan.ratePlanName+"</span><br>";
+        html+="    <div>";
+        for(var j in cartPlan.charges){
+            var cartPlanCharge = cartPlan.charges[j];
+            html+="  <div><small><span class='fa fa-angle-double-right'></span>  "+cartPlanCharge.Name;
+            if (cartPlanCharge.Qty > -1 && cartPlanCharge.Qty != null && cartPlanCharge.Uom){
+                html+= " ("+cartPlanCharge.Qty+" x "+cartPlanCharge.Uom+")";
+            } else if (cartPlanCharge.Uom) {
+                html+= " ("+cartPlanCharge.Uom+")";
+            }
+            html+="  </small></div>";
+            // console.log(cartPlanCharge);
+        }
+        html+="    </div>";
+        html+="  </div>";
+        html+="  <div class='clear-block'></div>";
+        html+="</li>";
+    }
+    $(".chosen-plans").html(html);
+
+		$(".btn-remove").on('click', function(event){
+			var buttonId = $(this).attr('id');
+			removeFromCart(buttonId);
+		});
+	}
+
+	var removeFromCart = function(buttonId){
+		var itemId = parseInt(buttonId.split('remove_item_')[1]);
+
+		$.getJSON("backend/index.php?type=RemoveItemFromCart", {itemId:itemId},
+			function(data){
+				if(!data.success) {
+					addError(data.msg);
+				}
+				else {
+					refreshCart(data.msg);
+				}
+        	}
+		);
+	};
+
+	// Validate Promo begin
+	var promoValidate = function(){
+		// reusable function to show validation message
+		var showValidationMessage = function (addIconClass, addAlertClass) {
+			$('#promo-msg-icon').removeClass().addClass('fa ' + addIconClass);
+			$('#promo_alert_close').on('click', function(){
+				$('#promo-msg-container').addClass('hidden');
+			});
+			$('#promo-msg-container')
+				.removeClass()
+				.addClass('alert ' + addAlertClass)
+				.show();
+		};
+		var pCode = $('#promo_code').val().toLowerCase();
+		var promosUsed = $('#promo_apply').data('promosUsed');
+		if (!pCode) {
+			showValidationMessage('fa-exclamation-circle', 'alert-danger');
+			$('#promo_message').html("No promo code entered");
+		} else if ($.inArray(pCode, promosUsed) < 0) { // if the promo code wasn't already used
+			$.getJSON("backend/index.php?type=PromoValidate", {promoCode:pCode},
+				function(data){
+					console.log(data);
+					if(!data.success) {
+						addError(data.msg);
+					}
+					else {
+						if(data.msg[0].result.length === 0){ // if there were no matching promos
+							showValidationMessage('fa-exclamation-circle', 'alert-danger');
+						} else { // if there was a matching promo code
+							showValidationMessage('fa-check', 'alert-success');
+							refreshCart(data.msg);
+							$('#promo_apply').data('promosUsed').push(pCode);
+							console.log($('#promo_apply').data('promosUsed'));
+						}
+						var promoMessage = data.msg[0].promoResult;
+						$('#promo_message').html("<kbd>"+pCode+"</kbd> "+promoMessage);
+					}
+	        	}
+			);
+		} else { // the promo code was already used
+			showValidationMessage('fa-ban', 'alert-danger');
+			$('#promo_message').html("<kbd>"+pCode+"</kbd> was already used");
+		}
+	};
+	// Validate Promo end
+
+</script>
+</body>
+</html>
